@@ -1,30 +1,44 @@
 #include "shell.h"
 
-/**
- * toknelize - Divise une chaîne de caractères en tokens (arguments)
- * @buffer: La chaîne de caractères à diviser (entrée de l'utilisateur)
- *
- * Return: Un tableau de chaînes de caractères (les arguments).
- */
-char **toknelize(char *buffer)
-{
-	char **args = malloc(TAILLE_BUFFER * sizeof(char *));
-	char *token;
-	int i = 0;
+#define DELIM " \t\r\n\a"
 
-	if (args == NULL)
+/**
+ * tknelize - Tokenise une chaîne de caractères.
+ * @buffer: Chaîne de caractères à tokeniser
+ *
+ * Return: Un tableau de chaînes de caractères (arguments) ou NULL.
+ */
+char **tknelize(char *buffer)
+{
+	char **args = malloc(64 * sizeof(char *));
+	char *token;
+	int position = 0;
+
+	if (!args)
 	{
 		perror("malloc");
 		return (NULL);
 	}
 
-	token = strtok(buffer, " ");
+	token = strtok(buffer, DELIM);
 	while (token != NULL)
 	{
-		args[i++] = token;
-		token = strtok(NULL, " ");
-	}
-	args[i] = NULL;
+		args[position] = token;
+		position++;
 
+		if (position >= 64)
+		{
+			args = realloc(args, (position + 1) * sizeof(char *));
+			if (!args)
+			{
+				perror("realloc");
+				return (NULL);
+			}
+		}
+
+		token = strtok(NULL, DELIM);
+	}
+
+	args[position] = NULL;
 	return (args);
 }

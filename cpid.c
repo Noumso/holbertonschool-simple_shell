@@ -1,36 +1,19 @@
 #include "shell.h"
+
+
 /**
- * creer_processus - Crée un processus enfant et exécute une commande
- * @buffer: Commande à exécuter
- *
- * Retourne: Rien.
+ * creer_processus - Crée un processus pour exécuter la commande
+ * @args: Tableau des arguments de la commande à exécuter
  */
-void creer_processus(char *buffer)
+void creer_processus(char **args)
 {
 	pid_t pid;
 	int statut;
-	char **args;
-	char *commande;
 
-	args = toknelize(buffer);
-	if (args == NULL)
-	{
-		write(STDOUT_FILENO, "Erreur : commande invalide\n", 27);
-		return;
-	}
-	commande = verifier_commande(args);
-	if (commande == NULL)
-	{
-		free(args);
-		return;
-	}
-	args[0] = commande;
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("Erreur fork");
-		free(args);
-		free(commande);
 		return;
 	}
 	if (pid == 0)
@@ -38,8 +21,6 @@ void creer_processus(char *buffer)
 		if (execve(args[0], args, environ) == -1)
 		{
 			perror(args[0]);
-			free(args);
-			free(commande);
 			exit(EXIT_FAILURE);
 		}
 	}

@@ -1,9 +1,10 @@
 #include "shell.h"
+
 /**
- * chercher_commande - Cherche une commande dans les répertoires path
- * @commande: Commande à chercher
+ * chercher_commande - Recherche une commande dans les répertoires du PATH
+ * @commande: Nom de la commande à rechercher
  *
- * Return: Le chemin complet de la commande si trouvée, NULL sinon.
+ * Return: Le chemin complet de la commande si trouvée, sinon NULL
  */
 char *chercher_commande(char *commande)
 {
@@ -12,16 +13,17 @@ char *chercher_commande(char *commande)
 	size_t longueur_commande;
 	struct stat buffer;
 
+	if (stat(commande, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
+	{
+		return (strdup(commande));
+	}
 	if (!path)
 		return (NULL);
-
-	path_copy = strdup(path); /* Copie de PATH */
+	path_copy = strdup(path);
 	if (!path_copy)
 		return (NULL);
-
 	longueur_commande = strlen(commande);
 	repertoire = strtok(path_copy, ":");
-
 	while (repertoire)
 	{
 		chemin_complet = malloc(strlen(repertoire) + longueur_commande + 2);
@@ -30,21 +32,17 @@ char *chercher_commande(char *commande)
 			free(path_copy);
 			return (NULL);
 		}
-
 		strcpy(chemin_complet, repertoire);
 		strcat(chemin_complet, "/");
 		strcat(chemin_complet, commande);
-
 		if (stat(chemin_complet, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 		{
 			free(path_copy);
 			return (chemin_complet);
 		}
-
 		free(chemin_complet);
 		repertoire = strtok(NULL, ":");
 	}
-
 	free(path_copy);
 	return (NULL);
 }
