@@ -14,5 +14,7 @@ char *read_command(void);
 void execute_command(char *command);
 ssize_t lire_entree(char *buffer, size_t taille);
 void creer_processus(char *buffer);
+char **toknelize(char *buffer);
+char *chercher_commande(char *commande);
 #endif
 
