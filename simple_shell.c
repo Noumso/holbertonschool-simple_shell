@@ -28,6 +28,12 @@ int main(void)
 			buffer[n_lu - 1] = '\0';
 		if (buffer[0] == '\0')
 			continue;
+		commande = chercher_commande(buffer);
+		if (commande == NULL)
+		{
+			write(STDOUT_FILENO, "Commande introuvable\n", 21);
+			continue;
+		}
 		creer_processus(buffer);
 	}
 	return (0);
