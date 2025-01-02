@@ -21,6 +21,7 @@ void creer_processus(char *buffer)
 	if (pid == 0)
 	{
 		char *args[2];
+
 		args[0] = buffer;
 		args[1] = NULL;
 		if (execve(buffer, args, environ) == -1)
