@@ -8,6 +8,7 @@
 int main(void)
 {
 	char buffer[TAILLE_BUFFER];
+	char *commande;
 	ssize_t n_lu;
 
 	while (1)

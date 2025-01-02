@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #define TAILLE_BUFFER 1024
 extern char **environ;
 
@@ -16,5 +17,6 @@ ssize_t lire_entree(char *buffer, size_t taille);
 void creer_processus(char *buffer);
 char **toknelize(char *buffer);
 char *chercher_commande(char *commande);
+char *verifier_commande(char **args);
 #endif
 

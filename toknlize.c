@@ -8,23 +8,23 @@
  */
 char **toknelize(char *buffer)
 {
-    char **args = malloc(TAILLE_BUFFER * sizeof(char *));
-    char *token;
-    int i = 0;
+	char **args = malloc(TAILLE_BUFFER * sizeof(char *));
+	char *token;
+	int i = 0;
 
-    if (args == NULL)
-    {
-        perror("malloc");
-        return NULL;
-    }
+	if (args == NULL)
+	{
+		perror("malloc");
+		return (NULL);
+	}
 
-    token = strtok(buffer, " ");
-    while (token != NULL)
-    {
-        args[i++] = token;
-        token = strtok(NULL, " ");
-    }
-    args[i] = NULL;
+	token = strtok(buffer, " ");
+	while (token != NULL)
+	{
+		args[i++] = token;
+		token = strtok(NULL, " ");
+	}
+	args[i] = NULL;
 
-    return (args);
+	return (args);
 }

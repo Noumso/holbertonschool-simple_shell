@@ -1,37 +1,41 @@
-#include "shell.c"
+#include "shell.h"
 /**
- * chercher_commande - Cherche une commande dans les répertoires définis par PATH
+ * chercher_commande - Cherche une commande dans les répertoires path
  * @commande: Commande à chercher
  *
- * Retourne: Le chemin complet de la commande si trouvée, NULL sinon.
+ * Return: Le chemin complet de la commande si trouvée, NULL sinon.
  */
 char *chercher_commande(char *commande)
 {
 	char *path = getenv("PATH");
-	char *path_copy = strdup(path);
-	char *repertoire;
-	char *chemin_complet;
+	char *path_copy, *repertoire, *chemin_complet;
+	size_t longueur_commande;
 	struct stat buffer;
 
-	if (path_copy == NULL)
-	{
-		perror("strdup");
+	if (!path)
 		return (NULL);
-	}
+
+	path_copy = strdup(path); /* Copie de PATH */
+	if (!path_copy)
+		return (NULL);
+
+	longueur_commande = strlen(commande);
 	repertoire = strtok(path_copy, ":");
-	while (repertoire != NULL)
+
+	while (repertoire)
 	{
-		chemin_complet = malloc(strlen(repertoire) + strlen(commande) + 2);
-		if (chemin_complet == NULL)
+		chemin_complet = malloc(strlen(repertoire) + longueur_commande + 2);
+		if (!chemin_complet)
 		{
-			perror("malloc");
 			free(path_copy);
 			return (NULL);
 		}
+
 		strcpy(chemin_complet, repertoire);
 		strcat(chemin_complet, "/");
 		strcat(chemin_complet, commande);
-		if (access(chemin_complet, X_OK) == 0)
+
+		if (stat(chemin_complet, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 		{
 			free(path_copy);
 			return (chemin_complet);
@@ -40,6 +44,7 @@ char *chercher_commande(char *commande)
 		free(chemin_complet);
 		repertoire = strtok(NULL, ":");
 	}
+
 	free(path_copy);
 	return (NULL);
 }
