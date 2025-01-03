@@ -19,5 +19,6 @@ char **traiter_ligne(char *buffer, size_t taille_buffer);
 char **tknelize(char *buffer);
 char *chercher_commande(char *commande);
 char *verifier_commande(char **args);
+void executer_env(void);
 #endif
 
