@@ -20,7 +20,7 @@ char **tknelize(char *buffer)
 		return (NULL);
 	}
 
-	token = strtok(buffer, DELIM);
+	token = _strtok(buffer, DELIM);
 	while (token != NULL)
 	{
 		args[position] = token;
@@ -36,7 +36,7 @@ char **tknelize(char *buffer)
 			}
 		}
 
-		token = strtok(NULL, DELIM);
+		token = _strtok(NULL, DELIM);
 	}
 
 	args[position] = NULL;

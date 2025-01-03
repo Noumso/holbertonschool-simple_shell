@@ -15,15 +15,15 @@ char *chercher_commande(char *commande)
 
 	if (stat(commande, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 	{
-		return (strdup(commande));
+		return (_strdup(commande));
 	}
 	if (!path)
 		return (NULL);
-	path_copy = strdup(path);
+	path_copy = _strdup(path);
 	if (!path_copy)
 		return (NULL);
-	longueur_commande = strlen(commande);
-	repertoire = strtok(path_copy, ":");
+	longueur_commande = _strlen(commande);
+	repertoire = _strtok(path_copy, ":");
 	while (repertoire)
 	{
 		chemin_complet = malloc(strlen(repertoire) + longueur_commande + 2);
@@ -32,16 +32,16 @@ char *chercher_commande(char *commande)
 			free(path_copy);
 			return (NULL);
 		}
-		strcpy(chemin_complet, repertoire);
-		strcat(chemin_complet, "/");
-		strcat(chemin_complet, commande);
+		_strcpy(chemin_complet, repertoire);
+		_strcat(chemin_complet, "/");
+		_strcat(chemin_complet, commande);
 		if (stat(chemin_complet, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 		{
 			free(path_copy);
 			return (chemin_complet);
 		}
 		free(chemin_complet);
-		repertoire = strtok(NULL, ":");
+		repertoire = _strtok(NULL, ":");
 	}
 	free(path_copy);
 	return (NULL);
