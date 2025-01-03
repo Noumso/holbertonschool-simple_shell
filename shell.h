@@ -15,6 +15,7 @@ char *read_command(void);
 void execute_command(char *command);
 ssize_t lire_entree(char *buffer, size_t taille);
 void creer_processus(char **args);
+char **traiter_ligne(char *buffer, size_t taille_buffer);
 char **tknelize(char *buffer);
 char *chercher_commande(char *commande);
 char *verifier_commande(char **args);

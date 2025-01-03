@@ -6,44 +6,37 @@
  */
 int main(void)
 {
-	char buffer[TAILLE_BUFFER];
-	char **args;
-	char *commande;
-	ssize_t n_lu;
+	char buffer[TAILLE_BUFFER]; /* Tampon pour la commande entrée */
+	char **args;                /* Tableau d'arguments pour la commande */
+	char *commande;             /* Chemin complet de la commande */
 
 	while (1)
 	{
 		write(STDOUT_FILENO, "$ ", 2);
-		n_lu = lire_entree(buffer, TAILLE_BUFFER);
-		if (n_lu == -1)
-		{
-			perror("read");
-			continue;
-		}
-		if (n_lu == 0)
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			break;
-		}
-		if (buffer[n_lu - 1] == '\n')
-			buffer[n_lu - 1] = '\0';
-		if (buffer[0] == '\0')
-			continue;
-		args = tknelize(buffer);
-		if (args == NULL || args[0] == NULL)
-		{
-			free(args);
-			continue;
-		}
+
+		/* Traiter la ligne d'entrée et obtenir les arguments */
+		args = traiter_ligne(buffer, TAILLE_BUFFER);
+		if (args == NULL)
+			continue; /* Si aucune commande n'est entrée, on recommence */
+
+		/* Chercher le chemin complet de la commande */
 		commande = chercher_commande(args[0]);
 		if (commande == NULL)
 		{
 			write(STDOUT_FILENO, "Commande introuvable\n", 21);
-			free(args);
+			free(args); /* Libérer la mémoire allouée pour args */
 			continue;
 		}
+
+		/* Remplacer la commande par son chemin complet */
 		args[0] = commande;
+
+		/* Créer le processus pour exécuter la commande */
 		creer_processus(args);
+
+		/* Libérer la mémoire allouée pour args */
+		free(args);
 	}
+
 	return (0);
 }
