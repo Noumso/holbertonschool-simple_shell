@@ -1,76 +1,42 @@
 #include "shell.h"
 
 /**
- * main - Entry point for the simple shell
- *
- * Return: Always 0 (Success)
+ * main - Point d'entrée pour le shell simple
+ * Return: Toujours 0 (Succès)
  */
 int main(void)
 {
-    char buffer[TAILLE_BUFFER]; /* Buffer to store the user input */
-    ssize_t n_read;           /* Number of characters read */
-    pid_t pid;                /* Process ID for fork */
-    int status;               /* Status for waitpid */
-    struct stat st;           /* For checking if the command is executable */
+	char buffer[TAILLE_BUFFER]; /* Tampon pour la commande entrée */
+	char **args;                /* Tableau d'arguments pour la commande */
+	char *commande;             /* Chemin complet de la commande */
 
-    while (1)
-    {
-        /* Display the prompt */
-        write(STDOUT_FILENO, "$ ", 2);
+	while (1)
+	{
+		write(STDOUT_FILENO, "$ ", 2);
 
-        /* Read user input */
-        n_read = read(STDIN_FILENO, buffer, TAILLE_BUFFER - 1);
-        if (n_read == -1) /* Error reading input */
-        {
-            perror("read");
-            continue;
-        }
-        if (n_read == 0) /* End of file (Ctrl+D) */
-        {
-            write(STDOUT_FILENO, "\n", 1);
-            break;
-        }
+		/* Traiter la ligne d'entrée et obtenir les arguments */
+		args = traiter_ligne(buffer, TAILLE_BUFFER);
+		if (args == NULL)
+			continue; /* Si aucune commande n'est entrée, on recommence */
 
-        /* Null-terminate the input and remove trailing newline */
-        buffer[n_read] = '\0';
-        if (buffer[n_read - 1] == '\n')
-            buffer[n_read - 1] = '\0';
+		/* Chercher le chemin complet de la commande */
+		commande = chercher_commande(args[0]);
+		if (commande == NULL)
+		{
+			write(STDOUT_FILENO, "Commande introuvable\n", 21);
+			free(args); /* Libérer la mémoire allouée pour args */
+			continue;
+		}
 
-        /* Skip empty input */
-        if (buffer[0] == '\0')
-            continue;
+		/* Remplacer la commande par son chemin complet */
+		args[0] = commande;
 
-        /* Check if the command exists and is executable */
-        if (stat(buffer, &st) != 0 || !(st.st_mode & S_IXUSR))
-        {
-            write(STDOUT_FILENO, "Error: Command not found\n", 25);
-            continue;
-        }
+		/* Créer le processus pour exécuter la commande */
+		creer_processus(args);
 
-        /* Create a child process to execute the command */
-        pid = fork();
-        if (pid == -1) /* Error during fork */
-        {
-            perror("fork");
-            continue;
-        }
-        if (pid == 0) /* Child process */
-        {
-            char *args[2];
-	    args[0] = buffer; 
-	    args[1] = NULL;
-            if (execve(buffer, args, NULL) == -1) /* Execute the command */
-            {
-                perror("execve");
-                exit(EXIT_FAILURE);
-            }
-        }
-        else /* Parent process */
-        {
-            waitpid(pid, &status, 0); /* Wait for the child to finish */
-        }
-    }
+		/* Libérer la mémoire allouée pour args */
+		free(args);
+	}
 
-    return (0);
+	return (0);
 }
-
