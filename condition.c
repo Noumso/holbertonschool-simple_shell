@@ -5,11 +5,12 @@
 #include "shell.h"
 
 /**
- * traiter_ligne - Traite la ligne lue par l'utilisateur et la tokenise en arguments.
+ * traiter_ligne - Traite la ligne lue par l'utilisateur.
  * @buffer: Le tampon qui contient la ligne entrée par l'utilisateur.
  * @taille_buffer: La taille maximale du tampon.
- * 
- * Return: Un tableau de chaînes de caractères représentant les arguments de la commande,
+ *
+ * Return: Un tableau de chaînes de caractères représentant
+ * les arguments de la commande,
  *         ou NULL en cas d'erreur ou de ligne vide.
  */
 char **traiter_ligne(char *buffer, size_t taille_buffer)
