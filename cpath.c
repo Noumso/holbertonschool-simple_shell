@@ -26,7 +26,7 @@ char *chercher_commande(char *commande)
 	repertoire = _strtok(path_copy, ":");
 	while (repertoire)
 	{
-		chemin_complet = malloc(strlen(repertoire) + longueur_commande + 2);
+		chemin_complet = malloc(_strlen(repertoire) + longueur_commande + 2);
 		if (!chemin_complet)
 		{
 			free(path_copy);
