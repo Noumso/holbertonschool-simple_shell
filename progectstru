@@ -1,0 +1,13 @@
+holbertonschool-simple_shell/
+├── AUTHORS
+├── README.md
+├── hsh (exécutable après compilation)
+├── main.c
+├── shell.h (fichier d'en-tête)
+├── builtins.c (fonctions built-in comme `env` et `exit`)
+├── helpers.c (fonctions utilitaires comme `afficher_env`)
+├── execute.c (gestion de `execve`)
+├── tokenize.c (division des lignes en arguments)
+├── path.c (gestion du PATH)
+├── Makefile (pour simplifier la compilation)
+
