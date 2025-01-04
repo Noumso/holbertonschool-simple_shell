@@ -8,7 +8,7 @@
  */
 char *chercher_commande(char *commande)
 {
-	char *path = getenv("PATH");
+	char *path = _getenv("PATH");
 	char *path_copy, *repertoire, *chemin_complet;
 	size_t longueur_commande;
 	struct stat buffer;
