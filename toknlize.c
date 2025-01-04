@@ -3,16 +3,15 @@
 #define DELIM " \t\r\n\a"
 
 /**
- * tknelize - Tokenise une chaîne de caractères.
- * @buffer: Chaîne de caractères à tokeniser
- *
- * Return: Un tableau de chaînes de caractères (arguments) ou NULL.
+ * tknelize - Divise une chaîne en tokens.
+ * @buffer: Chaîne de caractères à diviser.
+ * Return: Tableau de tokens ou NULL en cas d'erreur.
  */
 char **tknelize(char *buffer)
 {
 	char **args = malloc(64 * sizeof(char *));
 	char *token;
-	int position = 0;
+	int i = 0;
 
 	if (!args)
 	{
@@ -21,24 +20,21 @@ char **tknelize(char *buffer)
 	}
 
 	token = _strtok(buffer, DELIM);
-	while (token != NULL)
+	while (token)
 	{
-		args[position] = token;
-		position++;
+		args[i++] = token;
 
-		if (position >= 64)
+		if (i >= 64)
 		{
-			args = realloc(args, (position + 1) * sizeof(char *));
+			args = realloc(args, (i + 1) * sizeof(char *));
 			if (!args)
 			{
 				perror("realloc");
 				return (NULL);
 			}
 		}
-
 		token = _strtok(NULL, DELIM);
 	}
-
-	args[position] = NULL;
+	args[i] = NULL;
 	return (args);
 }

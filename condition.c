@@ -2,9 +2,9 @@
 
 /**
  * traiter_ligne - Traite la ligne lue par l'utilisateur.
- * @buffer: Le tampon qui contient la ligne entrée par l'utilisateur.
- * @taille_buffer: La taille maximale du tampon.
- * Return: Un tableau de chaînes de caractères représentant
+ * @buffer: Tampon contenant la commande entrée.
+ * @taille_buffer: Taille maximale du tampon.
+ * Return: Tableau d'arguments ou NULL si aucune commande.
  */
 char **traiter_ligne(char *buffer, size_t taille_buffer)
 {
@@ -22,22 +22,19 @@ char **traiter_ligne(char *buffer, size_t taille_buffer)
 		write(STDOUT_FILENO, "\n", 1);
 		exit(0);
 	}
-	if (buffer[n_lu - 1] == '\n')
-		buffer[n_lu - 1] = '\0';
+	buffer[n_lu - 1] = '\0'; /* Supprimer le caractère '\n' */
 
-	if (buffer[0] == '\0')
-		return (NULL);
 	if (strcmp(buffer, "exit") == 0)
-	{
 		exit(0);
-	}
+
 	if (strcmp(buffer, "env") == 0)
 	{
 		executer_env();
-		return (0);
+		return (NULL);
 	}
+
 	args = tknelize(buffer);
-	if (args == NULL || args[0] == NULL)
+	if (!args || !args[0])
 	{
 		free(args);
 		return (NULL);

@@ -90,41 +90,22 @@ char *_strdup(char *str)
 
 	return (str2);
 }
-/**
- * _getenv - Gets The Value Of Enviroment Variable By Name
- * @name: Environment Variable Name
- * Return: The Value of the Environment Variable Else NULL.
- */
-char *_getenv(char *name)
-{
-	size_t nl, vl;
-	char *value;
-	int i, x, j;
-
-	nl = _strlen(name);
-	for (i = 0 ; environ[i]; i++)
+	/**
+	 * _getenv - Récupère la valeur d'une variable d'environnement.
+	 * @name: Nom de la variable d'environnement.
+	 * Return: Valeur de la variable ou NULL si introuvable.
+	 */
+	char *_getenv(char *name)
 	{
-		if (_strncmp(name, environ[i], nl) == 0)
+		size_t len = _strlen(name);
+		int i;
+
+		for (i = 0; environ[i]; i++)
 		{
-			vl = _strlen(environ[i]) - nl;
-			value = malloc(sizeof(char) * vl);
-			if (!value)
+			if (_strncmp(name, environ[i], len) == 0 && environ[i][len] == '=')
 			{
-				free(value);
-				perror("unable to alloc");
-				return (NULL);
+				return (environ[i] + len + 1);
 			}
-
-			j = 0;
-			for (x = nl + 1; environ[i][x]; x++, j++)
-			{
-				value[j] = environ[i][x];
-			}
-			value[j] = '\0';
-
-			return (value);
 		}
+		return (NULL);
 	}
-
-	return (NULL);
-}
