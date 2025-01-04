@@ -13,7 +13,7 @@ char *chercher_commande(char *commande)
 	size_t longueur_commande;
 	struct stat buffer;
 
-	if (stat(commande, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
+	if (stat(commande, &buffer) == 0)
 	{
 		return (_strdup(commande));
 	}
@@ -35,7 +35,7 @@ char *chercher_commande(char *commande)
 		_strcpy(chemin_complet, repertoire);
 		_strcat(chemin_complet, "/");
 		_strcat(chemin_complet, commande);
-		if (stat(chemin_complet, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
+		if (stat(chemin_complet, &buffer) == 0)
 		{
 			free(path_copy);
 			return (chemin_complet);
