@@ -17,7 +17,6 @@ ssize_t lire_entree(char *buffer, size_t taille);
 void creer_processus(char **args);
 char **traiter_ligne(char *buffer, size_t taille_buffer);
 char **tknelize(char *buffer);
-char *chercher_commande(char *commande);
 char *verifier_commande(char **args);
 void executer_env(void);
 int _putchar(char c);
@@ -32,5 +31,7 @@ char *_strcat(char *dest, char *src);
 int _strncmp(const char *s1, const char *s2, size_t n);
 char *_strdup(char *str);
 char *_getenv(char *name);
+char *build(char *token, char *value);
+char *chercher_commande(char *commande);
 #endif
 
