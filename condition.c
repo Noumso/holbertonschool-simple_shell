@@ -24,10 +24,10 @@ char **traiter_ligne(char *buffer, size_t taille_buffer)
 	}
 	buffer[n_lu - 1] = '\0'; /* Supprimer le caractère '\n' */
 
-	if (strcmp(buffer, "exit") == 0)
+	if (_strncmp(buffer, "exit", 5) == 0)
 		exit(0);
 
-	if (strcmp(buffer, "env") == 0)
+	if (_strncmp(buffer, "env", 3) == 0)
 	{
 		executer_env();
 		return (NULL);
