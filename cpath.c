@@ -14,7 +14,7 @@ char *chercher_commande(char *commande)
 	char *path_copy, *repertoire, *chemin_complet;
 	size_t longueur_commande = _strlen(commande);
 
-	if (strchr(commande, '/') != NULL)
+	if (_strchr(commande, '/') != NULL)
 	{
 		if (stat(commande, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 			return (_strdup(commande));
