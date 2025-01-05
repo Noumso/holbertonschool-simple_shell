@@ -1,102 +1,82 @@
-SIMPLE_SHELL(1)                        User Commands                        SIMPLE_SHELL(1)
+.TH simple_shell 1 "January 2025" "Version 1.0" "Simple Shell Manual"
 
-NAME
-       simple_shell - A simple UNIX command-line interpreter
+.SH NAME
+simple_shell \- simple Unix command line interpreter
 
-SYNOPSIS
-       simple_shell
+.SH SYNOPSIS
+.B ./hsh
+simple shell by holberton school
+.SH DESCRIPTION
+.B simple_shell
+est un interpréteur de ligne de commande minimaliste conçu pour exécuter des commandes Unix de base. Ce shell a été développé dans un but éducatif pour comprendre les mécanismes internes des shells Unix.
 
-DESCRIPTION
-       simple_shell is a basic command-line interpreter that allows users to run commands
-       interactively. It implements a basic shell environment where users can execute commands
-       and built-in functions. It uses `execve` to run external commands and has basic features
-       such as a prompt, `exit` command to quit the shell, and `env` to display environment variables.
+.SH USAGE
+Le shell peut fonctionner en deux modes :
 
-       simple_shell is a simple educational tool for understanding how a shell interacts with
-       the operating system.
+.TP
+.B Mode interactif
+Le shell affiche un prompt (ex: "$") et attend les commandes de l'utilisateur. Après exécution, il réaffiche le prompt.
 
-COMMANDS
-       exit
-           Exit the shell. The shell terminates and returns to the terminal.
+.TP
+.B Mode non-interactif
+Le shell lit les commandes depuis un fichier ou un pipe sans afficher de prompt.
 
-       env
-           Print the current environment variables. The environment variables are printed in the
-           form "NAME=VALUE", one per line.
+.SH OPTIONS
+Aucune option spécifique n'est requise pour exécuter le shell.
 
-       external_commands
-           Any valid command that exists in the system's PATH can be executed. The command
-           is searched for in the directories listed in the PATH environment variable.
-           The shell uses the `execve` system call to execute the command.
+.SH BUILT-INS
+Le shell prend en charge les commandes internes suivantes :
 
-USAGE
-       To use simple_shell, run the program from a terminal session:
+.TP
+.B exit
+Quitte le shell.
 
-           $ ./simple_shell
+.TP
+.B env
+Affiche les variables d'environnement actuelles.
 
-       The shell will display a prompt (e.g., `$ `) and wait for user input. After the user
-       enters a command, the shell will attempt to execute it. If the command is a built-in
-       command (like `exit` or `env`), it will be processed internally. Otherwise, the shell
-       will attempt to locate the command in the directories listed in the PATH environment
-       variable and execute it.
+.SH EXAMPLES
+.B Exécution en mode interactif :
+.PP
+.EXAMPLE
+$ ./hsh
+$ ls
+file1 file2
+$ pwd
+/home/user/simple_shell
+$ exit
+.EEXAMPLE
 
-       If a command is not found, an error message is displayed, and the prompt reappears.
+.B Exécution en mode non-interactif :
+.PP
+.EXAMPLE
+$ echo "ls -l" | ./hsh
+-rw-r--r-- 1 user user 1234 Jan 4 12:00 file1
+-rw-r--r-- 1 user user 5678 Jan 4 12:01 file2
+.EEXAMPLE
 
-EXAMPLES
-       Example 1: Running an external command
-           $ ls
-           bin  etc  home  lib  usr
-           $
+.SH FILES
+.PP
+.I AUTHORS
+Liste des contributeurs au projet.
 
-       Example 2: Using the env command to display environment variables
-           $ env
-           PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-           HOME=/home/user
-           LANG=en_US.UTF-8
-           $
+.PP
+.I README.md
+Documentation du projet.
 
-       Example 3: Using the exit command to exit the shell
-           $ exit
-           $
+.SH RETURN VALUE
+.B simple_shell
+renvoie 0 en cas de succès ou un code d'erreur approprié si une commande échoue.
 
-ERRORS
-       simple_shell will display the following error messages:
+.SH SEE ALSO
+.B sh(1),
+.B bash(1),
+.B execve(2),
+.B fork(2)
 
-       command_name: command not found
-           If the entered command cannot be found in the PATH directories, the shell will
-           display this error message.
+.SH BUGS
+Aucune fonctionnalité avancée n'est prise en charge pour le moment (ex : redirections, pipes).
 
-       execve failed: error_message
-           If the execution of a command via `execve` fails, this error will be displayed.
-
-ENVIRONMENT
-       simple_shell uses the following environment variables:
-
-       PATH
-           The PATH variable is used to search for executable commands in directories.
-
-       environ
-           The shell uses the global `environ` variable to pass the environment to the `execve`
-           system call when executing commands.
-
-FILES
-       /usr/bin/ls
-           Example of a typical external command that can be run within the shell.
-
-       /usr/local/bin
-           Typical directory included in the PATH where commands are stored.
-
-SEE ALSO
-       execve(2), env(1), exit(1)
-
-BUGS
-       - The shell does not support piping, redirections, or commands with arguments.
-       - Built-in functions are limited to `exit` and `env`.
-       - The shell will not search for commands in directories other than those listed in PATH.
-
-AUTHOR
-       Written by Pamela Chauvin.
-
-COPYRIGHT
-       This software is released under the MIT License. See the LICENSE file for details.
-
+.SH AUTHOR
+Ahmed Salem <yyahmedsalm@gmail.com>
 

@@ -1,33 +1,22 @@
 #include "shell.h"
 
 /**
- * main - Point d'entrée pour le shell simple
- * Return: Toujours 0 (Succès)
+ * main - Point d'entrée principal du programme.
+ * Cette fonction détecte si l'exécution doit se faire en mode inta ou non
+ * interactif en vérifiant si l'entrée standard est un terminal.
+ *
+ * Return: Toujours 0 (succès).
  */
 int main(void)
 {
-	char buffer[TAILLE_BUFFER];
-	char **args;
-	char *commande;
-
-	while (1)
+	if (isatty(STDIN_FILENO)) /* Mode interactif */
 	{
-		write(STDOUT_FILENO, "$ ", 2);
-		args = traiter_ligne(buffer, TAILLE_BUFFER);
-		if (args == NULL)
-			continue;
-
-		commande = chercher_commande(args[0]);
-		if (commande == NULL)
-		{
-			write(STDOUT_FILENO, "Commande introuvable\n", 21);
-			free(args);
-			continue;
-		}
-		args[0] = commande;
-		creer_processus(args);
-		free(args);
+		mode_interactif();
 	}
+	else /* Mode non interactif */
+	{
+		mode_non_interactif();
+	}
+
 	return (0);
 }
-

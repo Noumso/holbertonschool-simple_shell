@@ -33,5 +33,7 @@ char *_strdup(char *str);
 char *_getenv(char *name);
 char *build(char *token, char *value);
 char *chercher_commande(char *commande);
+void mode_interactif(void);
+void mode_non_interactif(void);
 #endif
 

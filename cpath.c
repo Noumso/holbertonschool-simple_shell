@@ -6,23 +6,25 @@
  *
  * Return: Le chemin complet de la commande si trouvée, sinon NULL
  */
+
 char *chercher_commande(char *commande)
 {
-	char *path = _getenv("PATH");
-	char *path_copy, *repertoire, *chemin_complet;
-	size_t longueur_commande;
 	struct stat buffer;
+	char *path;
+	char *path_copy, *repertoire, *chemin_complet;
+	size_t longueur_commande = _strlen(commande);
 
-	if (stat(commande, &buffer) == 0)
+	if (strchr(commande, '/') != NULL)
 	{
-		return (_strdup(commande));
+		if (stat(commande, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
+			return (_strdup(commande));
+		return (NULL);
 	}
+	path = _getenv("PATH");
 	if (!path)
 		return (NULL);
+
 	path_copy = _strdup(path);
-	if (!path_copy)
-		return (NULL);
-	longueur_commande = _strlen(commande);
 	repertoire = _strtok(path_copy, ":");
 	while (repertoire)
 	{
@@ -35,7 +37,8 @@ char *chercher_commande(char *commande)
 		_strcpy(chemin_complet, repertoire);
 		_strcat(chemin_complet, "/");
 		_strcat(chemin_complet, commande);
-		if (stat(chemin_complet, &buffer) == 0)
+
+		if (stat(chemin_complet, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 		{
 			free(path_copy);
 			return (chemin_complet);
