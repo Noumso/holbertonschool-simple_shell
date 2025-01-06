@@ -4,7 +4,7 @@
 # Simple Shell
 
 ## Description
-Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Holberton School. Ce programme implémente un interpréteur de commandes Unix minimaliste en C. Il a pour objectif d'approfondir les concepts de programmation système et la gestion des processus en utilisant des fonctions Unix natives.
+Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Holberton School. Ce programme implémente un interpréteur de commandes Unix minimaliste en C. Il a pour objectif d'approfondir les concepts de programmation système et la gestion des processus en utilisant des fonctions Unix prsonalisé.
 
 ---
 
@@ -21,9 +21,9 @@ Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Hol
 - **Support des chemins relatifs et absolus pour les commandes.**
 
 ---
+## Diagramme du fonctionnement du shell
 
-## Fonctionnement
-Voici un flowchart décrivant le fonctionnement du shell :
+Voici un diagramme montrant le processus de fonctionnement du shell :
 
 ```mermaid
 graph TD;
@@ -35,7 +35,6 @@ graph TD;
     D -->|Commande introuvable| G[Afficher 'Commande introuvable'];
     F --> H[Retour au prompt];
     G --> H;
-```
 ---
 
 ## Compilation
