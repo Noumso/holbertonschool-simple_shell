@@ -77,16 +77,24 @@ cat commands.txt | ./hsh
 ### Mode interactif
 ```bash
 $ ls
-file1  file2  file3
+AUTHORS      cpid.c          man_1_simple_shell  simple_shell.c  tools.c
+README.md    environement.c  modein.c            strchr.c
+char.c       exiten.c        modenoin.c          strtok.c
+condition.c  hsh             read.c              test_ls_2
+cpath.c      images          shell.h             toknlize.c
 $ pwd
-/home/user
-$ exit
+/home/hmeyd/holbertonschool-simple_shell
+$exit
 ```
 
 ### Mode non interactif
 ```bash
 $ echo "/bin/ls" | ./hsh
-file1  file2  file3
+AUTHORS      cpid.c          man_1_simple_shell  simple_shell.c  tools.c
+README.md    environement.c  modein.c            strchr.c
+char.c       exiten.c        modenoin.c          strtok.c
+condition.c  hsh             read.c              test_ls_2
+cpath.c      images          shell.h             toknlize.c
 ```
 
 ---
@@ -102,5 +110,6 @@ Voici quelques ressources pour approfondir les concepts abordés dans ce projet�
 ## Auteurs
 - **Ahmed Salem H’meyd**
   - Email : yyahmedsalm@gmail.com
+- **Noumane Bouqetyb**
 
 ---
