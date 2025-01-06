@@ -26,7 +26,8 @@ Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Hol
 Voici un diagramme montrant le processus de fonctionnement du shell :
 
 ```mermaid
-graph TD;
+```
+## graph TD;
     A[Utilisateur entre une commande] -->|Commande saisie| B[Lecture de l'entrée utilisateur];
     B --> C[Parsing et tokenisation de la commande];
     C --> D[Recherche du chemin dans PATH];
