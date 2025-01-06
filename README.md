@@ -26,18 +26,26 @@ Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Hol
 Voici un diagramme montrant le processus de fonctionnement du shell :
 
 ```mermaid
-```
-## graph TD;
-    A[Utilisateur entre une commande] -->|Commande saisie| B[Lecture de l'entrée utilisateur];
-    B --> C[Parsing et tokenisation de la commande];
-    C --> D[Recherche du chemin dans PATH];
-    D -->|Commande trouvée| E[Création d'un processus enfant];
-    E --> F[Exécution de la commande];
-    D -->|Commande introuvable| G[Afficher 'Commande introuvable'];
-    F --> H[Retour au prompt];
-    G --> H;
----
-
+graph TD;
+    Start[Début du shell] --> A[Est-ce en mode interactif ?]
+    A -->|Oui| B[Affiche le prompt]
+    A -->|Non| C[Lecture de l'entrée standard]
+    B --> D[Lecture de l'entrée utilisateur]
+    C --> D
+    D --> E[La commande est-elle vide ?]
+    E -->|Oui| B
+    E -->|Non| F[Parsing et tokenisation de la commande]
+    F --> G[La commande est-elle executable?]
+    G -->|Oui| H[Exécuter]
+    G -->|Non| I[Recherche du chemin dans PATH]
+    I --> J[Commande trouvée ?]
+    J -->|Oui| K[Création d'un processus enfant]
+    J -->|Non| L[Afficher 'Commande introuvable']
+    K --> M[Exécution de la commande]
+    M --> N[Processus terminé]
+    L --> B
+    N --> A[Retour au prompt  ou lecture suivante ]
+    H --> A
 ## Compilation
 Pour compiler le programme, utilisez la commande suivante :
 ```bash
