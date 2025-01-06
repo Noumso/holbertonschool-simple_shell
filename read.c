@@ -11,10 +11,11 @@
 ssize_t lire_entree(char *buffer, size_t taille)
 {
 	ssize_t n_lu = read(STDIN_FILENO, buffer, taille - 1);
+	printf("%ld\n", n_lu);
 
 	if (n_lu > 0)
 	{
-		buffer[n_lu] = '\0'; /* Ajoute un caractère de fin de chaîne */
+		buffer[n_lu] = '\0';
 	}
 	return (n_lu);
 }

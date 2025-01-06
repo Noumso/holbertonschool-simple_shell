@@ -6,38 +6,45 @@
  * @taille_buffer: Taille maximale du tampon.
  * Return: Tableau d'arguments ou NULL si aucune commande.
  */
-char **traiter_ligne(char *buffer, size_t taille_buffer)
+
+char **traiter_ligne(char *buffer)
 {
-	ssize_t n_lu;
 	char **args;
-
-	n_lu = read(STDIN_FILENO, buffer, taille_buffer);
-	if (n_lu == -1)
+	char *commande;
+	while (1)
 	{
-		perror("read");
-		return (NULL);
-	}
-	if (n_lu == 0)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		exit(0);
-	}
-	buffer[n_lu - 1] = '\0'; /* Supprimer le caractère '\n' */
+		ssize_t n_lu = read(STDIN_FILENO, buffer, strlen(buffer));
+		if (n_lu == -1)
+		{
+			perror("read");
+			continue;
+		}
 
-	if (_strncmp(buffer, "exit", 5) == 0)
-		exit(0);
+		if (n_lu == 0)
+		{
+			exit(0); /* Fin du flux ou EOF */
+		}
 
-	if (_strncmp(buffer, "env", 3) == 0)
-	{
-		executer_env();
-		return (NULL);
-	}
+		buffer[n_lu - 1] = '\0'; /* Supprime le caractère de nouvelle ligne */
 
-	args = tknelize(buffer);
-	if (!args || !args[0])
-	{
+		/* Appeler traiter_ligne pour analyser la commande */
+		args = exitenv(buffer);
+		if (args == NULL)
+		{
+			continue; /* Commande spéciale ou ligne vide */
+		}
+
+		commande = chercher_commande(args[0]);
+		if (commande == NULL)
+		{
+			write(STDERR_FILENO, args[0], _strlen(args[0]));
+			write(STDERR_FILENO, ": Commande introuvable\n", 23);
+			free(args);
+			continue;
+		}
+
+		args[0] = commande;
+		creer_processus(args);
 		free(args);
-		return (NULL);
 	}
-	return (args);
 }

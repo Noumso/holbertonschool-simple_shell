@@ -15,7 +15,7 @@ void mode_interactif(void)
 	{
 		write(STDOUT_FILENO, "$ ", 2);
 
-		args = traiter_ligne(buffer, TAILLE_BUFFER);
+		args = traiter_ligne(buffer);
 		if (args == NULL)
 			continue; /* Si aucune commande n'est entrée, on recommence */
 

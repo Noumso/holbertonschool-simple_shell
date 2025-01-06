@@ -1,125 +1,120 @@
-### **README.md for Simple Shell**
 
 ---
 
-# **Simple Shell**
+### **README.md**
 
-## **Introduction**
-`Simple Shell` est une interpréteur de ligne de commande minimaliste conçu pour imiter certains aspects d'un shell Unix standard. Ce projet a été développé dans le cadre du programme Holberton School pour renforcer les compétences en C et comprendre le fonctionnement interne des shells.
+```markdown
+# Simple Shell
 
----
-
-## **Fonctionnalités**
-- Affichage d'un prompt en attente de commandes utilisateur.
-- Exécution des commandes avec ou sans chemin complet (ex: `ls` ou `/bin/ls`).
-- Gestion des arguments passés aux commandes (ex: `ls -l`).
-- Gestion des commandes internes comme :
-  - `exit` : Quitter le shell.
-  - `env` : Afficher les variables d'environnement.
-- Gestion des erreurs (ex: commande introuvable).
-- Lecture et tokenisation des commandes.
-- Prise en charge des commandes du PATH.
+## Description
+Le **Simple Shell** est une implémentation d'un interpréteur de commandes Unix de base. Ce projet a été réalisé dans le cadre de la formation en développement à Holberton School. L'objectif principal est de comprendre et d'appliquer des concepts clés de programmation système en C.
 
 ---
 
-## **Compilation**
-Pour compiler le programme, utilisez la commande suivante :
+## Fonctionnalités
+- **Mode interactif** :
+  - Le shell affiche une invite (`$`) et attend des commandes utilisateur.
+- **Mode non interactif** :
+  - Le shell exécute des commandes depuis un fichier ou une redirection.
+- **Gestion des commandes classiques** :
+  - `exit` : Quitte le shell.
+  - `env` : Affiche les variables d'environnement.
+- **Gestion des erreurs** :
+  - Affiche un message lorsque la commande est introuvable.
+- **Exécution des commandes avec chemins absolus et relatifs**.
+
+---
+
+## Compilation
+Pour compiler le shell :
 ```bash
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
 
 ---
 
-## **Utilisation**
-### **Mode interactif**
-Exécutez le shell en mode interactif pour entrer des commandes directement dans le terminal :
+## Utilisation
+### Mode interactif
+Lancez simplement le programme :
 ```bash
 ./hsh
+```
+Vous verrez une invite (`$`). Tapez des commandes comme `ls` ou `pwd` pour les exécuter.
+
+### Mode non interactif
+Utilisez une redirection ou un fichier contenant des commandes :
+```bash
+echo "/bin/ls" | ./hsh
+```
+ou
+```bash
+cat commands.txt | ./hsh
+```
+
+---
+
+## Exemple de sortie
+### Mode interactif
+```bash
 $ ls
+file1  file2  file3
 $ pwd
+/home/user
 $ exit
 ```
 
-### **Mode non-interactif**
-Le shell peut également fonctionner en mode non-interactif en lisant des commandes depuis un fichier ou un pipe :
+### Mode non interactif
 ```bash
-echo "ls -l" | ./hsh
+$ echo "/bin/ls" | ./hsh
+file1  file2  file3
 ```
 
 ---
 
-## **Exemples**
-### **Exécution normale**
-```bash
-$ ./hsh
-$ ls
-AUTHORS  main.c  shell.c
-$ pwd
-/home/user/simple_shell
-$ exit
-```
+## Diagramme de flux
+Voici un diagramme de flux illustrant le fonctionnement de votre shell :
 
-### **Commande introuvable**
-```bash
-$ ./hsh
-$ invalid_command
-Commande introuvable
-$ exit
-```
+![Diagramme de flux](flowchart.png)
 
 ---
 
-## **Fichiers principaux**
-### **Code source**
-- `main.c` : Point d'entrée principal du shell.
-- `traiter_ligne.c` : Lecture et traitement des entrées utilisateur.
-- `tknelize.c` : Tokenisation des chaînes de caractères.
-- `chercher_commande.c` : Recherche des commandes dans le PATH.
-- `creer_processus.c` : Création et gestion des processus pour exécuter les commandes.
-- `executer_env.c` : Commande interne `env`.
-
-### **Utilitaires**
-- `tools.c` : Fonctions utilitaires (_strdup, _strlen, etc.).
-- `shell.h` : Fichier d'en-tête contenant les définitions et prototypes.
-
-### **Fichiers annexes**
-- `AUTHORS` : Liste des contributeurs.
-- `README.md` : Documentation du projet.
-- `man_1_simple_shell` : Manuel pour le shell.
+## Structure du code
+### Principales fonctions
+- **`main`** : Gère la boucle principale du shell.
+- **`lire_entree`** : Lit les commandes de l'utilisateur.
+- **`traiter_ligne`** : Analyse et découpe une ligne de commande.
+- **`chercher_commande`** : Recherche le chemin complet d'une commande.
+- **`creer_processus`** : Crée un processus enfant pour exécuter la commande.
+- **`executer_env`** : Affiche les variables d'environnement.
 
 ---
 
-## **Fonctionnalités à venir**
-- Gestion avancée des redirections (`>`, `>>`, `<`, etc.).
-- Implémentation de commandes comme `cd`.
-- Gestion des alias et historiques de commandes.
+## Ressources utiles
+Voici quelques sites qui peuvent vous aider à approfondir vos connaissances :
+- [Manuels Unix](https://man7.org/linux/man-pages/)
+- [GeeksforGeeks - System Programming](https://www.geeksforgeeks.org/system-programming/)
+- [The Linux Programming Interface](http://man7.org/tlpi/) (livre de référence)
+- [Learn C Programming](https://www.learn-c.org/)
 
 ---
 
-## **Dépendances**
-Le programme utilise uniquement des fonctions autorisées dans le cadre du projet :
-- `execve`, `fork`, `malloc`, `free`, `read`, `write`, `perror`, etc.
-- Bibliothèques standard : `<stdio.h>`, `<stdlib.h>`, `<unistd.h>`, `<string.h>`.
+## Auteurs
+- **Ahmed Salem H’meyd**  
+  [yyahmedsalm@gmail.com](mailto:yyahmedsalm@gmail.com)
 
 ---
 
-## **Exécution avec Valgrind**
-Pour vérifier l'absence de fuites mémoire :
-```bash
-valgrind --leak-check=full --track-origins=yes ./hsh
+## Licence
+Ce projet est réalisé dans un cadre éducatif et est soumis aux règles académiques de Holberton School.
 ```
 
 ---
 
-## **Contributeurs**
-- **Ahmed Salem** - <yyahmedsalm@gmail.com>
-- **Noumane Bouqetyb
----
+### **Diagramme de flux**
+Je vais générer un diagramme de flux pour compléter le README.
 
-## **Manuel**
-Un manuel est disponible pour expliquer l'utilisation du shell. Consultez-le avec :
-```bash
-man ./man_1_simple_shell
-```
+Le diagramme de flux a été généré avec succès. Vous pouvez le télécharger et l'ajouter au README via ce lien :
 
----
+[Diagramme de flux](sandbox:/mnt/data/flowchart.png)
+
+Si vous avez besoin d'autres ajustements ou d'ajouts, faites-le-moi savoir !

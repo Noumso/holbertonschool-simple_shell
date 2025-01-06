@@ -15,7 +15,7 @@ char *read_command(void);
 void execute_command(char *command);
 ssize_t lire_entree(char *buffer, size_t taille);
 void creer_processus(char **args);
-char **traiter_ligne(char *buffer, size_t taille_buffer);
+char **traiter_ligne(char *buffer);
 char **tknelize(char *buffer);
 char *verifier_commande(char **args);
 void executer_env(void);
@@ -35,5 +35,7 @@ char *build(char *token, char *value);
 char *chercher_commande(char *commande);
 void mode_interactif(void);
 void mode_non_interactif(void);
+char *_strchr(const char *s, int c);
+char **exitenv(char *buffer);
 #endif
 
