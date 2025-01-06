@@ -29,15 +29,15 @@ Voici un diagramme montrant le processus de fonctionnement du shell :
 ```mermaid
 graph TD;
     Start[Début du shell] --> A[Est-ce en mode interactif ?]
-    A -->|Oui| B[Affiche le prompt (dollar)]
-    A -->|Non| C[Lecture de l'entrée standard (STDIN)]
+    A -->|Oui| B[Affiche le prompt]
+    A -->|Non| C[Lecture de l'entrée standard]
     B --> D[Lecture de l'entrée utilisateur]
     C --> D
     D --> E[La commande est-elle vide ?]
     E -->|Oui| B
     E -->|Non| F[Parsing et tokenisation de la commande]
-    F --> G[La commande est-elle un built-in ?]
-    G -->|Oui| H[Exécuter le built-in]
+    F --> G[La commande est-elle executable?]
+    G -->|Oui| H[Exécuter]
     G -->|Non| I[Recherche du chemin dans PATH]
     I --> J[Commande trouvée ?]
     J -->|Oui| K[Création d'un processus enfant]
@@ -45,9 +45,9 @@ graph TD;
     K --> M[Exécution de la commande]
     M --> N[Processus terminé]
     L --> B
-    N --> A[Retour au prompt (interactif) ou lecture suivante (non-interactif)]
+    N --> A[Retour au prompt  ou lecture suivante ]
     H --> A
-
+```
 ## Compilation
 Pour compiler le programme, utilisez la commande suivante :
 ```bash
