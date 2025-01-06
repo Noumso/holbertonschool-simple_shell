@@ -1,5 +1,5 @@
 ### **README.md**
-
+![Diagramme de flux](images/flowchart.png)
 ```markdown
 # Simple Shell
 
@@ -22,11 +22,20 @@ Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Hol
 
 ---
 
-## Diagramme de flux
-Voici un diagramme de flux illustrant le fonctionnement global de votre shell :
+## Fonctionnement
+Voici un flowchart décrivant le fonctionnement du shell :
 
-![Diagramme de flux](flowchart.png)
-
+```mermaid
+graph TD;
+    A[Utilisateur entre une commande] -->|Commande saisie| B[Lecture de l'entrée utilisateur];
+    B --> C[Parsing et tokenisation de la commande];
+    C --> D[Recherche du chemin dans PATH];
+    D -->|Commande trouvée| E[Création d'un processus enfant];
+    E --> F[Exécution de la commande];
+    D -->|Commande introuvable| G[Afficher 'Commande introuvable'];
+    F --> H[Retour au prompt];
+    G --> H;
+```
 ---
 
 ## Compilation
