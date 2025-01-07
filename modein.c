@@ -2,34 +2,45 @@
 
 /**
  * mode_interactif - Gère l'exécution en mode interactif.
- * Cette fonction affiche un invite ("$") et attend les commandes utilisateur.
- * Les commandes sont traitées, cherchées dans le PATH si besoin exécutées.
+ * Cette fonction affiche une invite ("$") et
+ * attend les commandes utilisateur.
+ * Les commandes sont traitées, cherchées dans le PATH si besoin,
+ * puis exécutées.
  */
+
 void mode_interactif(void)
 {
-	char buffer[TAILLE_BUFFER]; /* Tampon pour la commande entrée */
-	char **args;
-	char *commande;
+	char *buffer = NULL;
+	size_t taille = 0;
+	ssize_t n_lus;
 
 	while (1)
 	{
+
 		write(STDOUT_FILENO, "$ ", 2);
 
-		args = traiter_ligne(buffer);
-		if (args == NULL)
-			continue; /* Si aucune commande n'est entrée, on recommence */
 
-		commande = chercher_commande(args[0]);
-		if (commande == NULL)
+		n_lus = getline(&buffer, &taille, stdin);
+		if (n_lus == -1)
 		{
-			write(STDOUT_FILENO, "Commande introuvable\n", 21);
-			free(args);
+
+			if (feof(stdin))
+				break;
+			perror("Erreur de lecture");
 			continue;
 		}
 
-		args[0] = commande;
-		creer_processus(args);
 
-		free(args);
+		if (buffer[n_lus - 1] == '\n')
+			buffer[n_lus - 1] = '\0';
+
+
+		if (traiter_ligne(buffer) == NULL)
+		{
+			write(STDERR_FILENO, "Erreur lors du traitement de la commande\n", 42);
+			continue;
+		}
 	}
+
+	free(buffer);
 }

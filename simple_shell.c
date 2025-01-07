@@ -7,16 +7,19 @@
  *
  * Return: Toujours 0 (succès).
  */
+
 int main(void)
 {
-	if (isatty(STDIN_FILENO)) /* Mode interactif */
+	/* Vérifie si stdin est connecté à un terminal pour déterminer le mode */
+	if (isatty(STDIN_FILENO))
 	{
 		mode_interactif();
 	}
-	else /* Mode non interactif */
+	else
 	{
 		mode_non_interactif();
 	}
 
 	return (0);
 }
+

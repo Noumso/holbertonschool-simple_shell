@@ -7,6 +7,7 @@
  * @buffer: Chaîne de caractères à diviser.
  * Return: Tableau de tokens ou NULL en cas d'erreur.
  */
+
 char **tknelize(char *buffer)
 {
 	char **args = malloc(64 * sizeof(char *));
@@ -35,6 +36,7 @@ char **tknelize(char *buffer)
 		}
 		token = _strtok(NULL, DELIM);
 	}
+
 	args[i] = NULL;
 	return (args);
 }

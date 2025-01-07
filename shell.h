@@ -13,7 +13,6 @@ extern char **environ;
 void display_prompt(void);
 char *read_command(void);
 void execute_command(char *command);
-ssize_t lire_entree(char *buffer, size_t taille);
 void creer_processus(char **args);
 char **traiter_ligne(char *buffer);
 char **tknelize(char *buffer);
@@ -31,11 +30,10 @@ char *_strcat(char *dest, char *src);
 int _strncmp(const char *s1, const char *s2, size_t n);
 char *_strdup(char *str);
 char *_getenv(char *name);
-char *build(char *token, char *value);
 char *chercher_commande(char *commande);
 void mode_interactif(void);
 void mode_non_interactif(void);
 char *_strchr(const char *s, int c);
-char **exitenv(char *buffer);
+char *exitenv(char *buffer);
+ssize_t lire_entree(char *buffer);
 #endif
-

@@ -5,40 +5,35 @@
  * Lit les commandes ligne par ligne depuis l'entrée standard,
  * les traite, cherche leur chemin complet si besoin, et les exécute.
  */
+
 void mode_non_interactif(void)
 {
-    char *ligne = NULL;
-    size_t taille = 0;
-    ssize_t n_lus;
-    char **args;
-    char *commande;
+	char *ligne = NULL;
+	size_t taille = 0;
+	ssize_t n_lus;
 
-    while ((n_lus = getline(&ligne, &taille, stdin)) != -1) {
-        /* Supprime le caractère de nouvelle ligne */
-        if (ligne[n_lus - 1] == '\n') {
-            ligne[n_lus - 1] = '\0';
-        }
-        /* Découpe la ligne en arguments */
-        args = traiter_ligne(ligne);
-        if (args == NULL) {
-            continue; /* Passe à la ligne suivante si aucune commande */
-        }
-        /* Recherche le chemin complet de la commande */
-        commande = chercher_commande(args[0]);
-	
-        if (commande == NULL) {
-            write(STDOUT_FILENO, "Commande introuvable\n", 21);
-            free(args);
-            continue;
-        }
+	while ((n_lus = getline(&ligne, &taille, stdin)) != -1)
+	{
 
-        args[0] = commande; /* Remplace l'argument par le chemin complet */
+		if (n_lus > 0 && ligne[n_lus - 1] == '\n')
+			ligne[n_lus - 1] = '\0';
 
-        /* Exécute la commande dans un processus enfant */
-        creer_processus(args);
 
-        free(args); /* Libère la mémoire pour les arguments */
-    }
+		if (ligne[0] == '\0')
+			continue;
 
-    free(ligne); /* Libère la mémoire allouée pour la ligne */
+
+		if (traiter_ligne(ligne) == NULL)
+		{
+			write(STDERR_FILENO, "Erreur lors du traitement de la commande\n", 42);
+		}
+	}
+
+	free(ligne);
+
+	if (!feof(stdin))
+	{
+		perror("Erreur de lecture sur stdin");
+		exit(EXIT_FAILURE);
+	}
 }

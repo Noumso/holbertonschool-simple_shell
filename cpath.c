@@ -10,8 +10,7 @@
 char *chercher_commande(char *commande)
 {
 	struct stat buffer;
-	char *path;
-	char *path_copy, *repertoire, *chemin_complet;
+	char *path, *path_copy, *repertoire, *chemin_complet;
 	size_t longueur_commande = _strlen(commande);
 
 	if (_strchr(commande, '/') != NULL)
@@ -23,7 +22,6 @@ char *chercher_commande(char *commande)
 	path = _getenv("PATH");
 	if (!path)
 		return (NULL);
-
 	path_copy = _strdup(path);
 	repertoire = _strtok(path_copy, ":");
 	while (repertoire)
@@ -37,12 +35,12 @@ char *chercher_commande(char *commande)
 		_strcpy(chemin_complet, repertoire);
 		_strcat(chemin_complet, "/");
 		_strcat(chemin_complet, commande);
-
 		if (stat(chemin_complet, &buffer) == 0 && (buffer.st_mode & S_IXUSR))
 		{
 			free(path_copy);
 			return (chemin_complet);
 		}
+
 		free(chemin_complet);
 		repertoire = _strtok(NULL, ":");
 	}
