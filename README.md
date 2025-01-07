@@ -1,143 +1,115 @@
-Simple Shell (simple_shell)
-Description
-simple_shell est un interpréteur de commandes UNIX simple, écrit en C, qui implémente les fonctionnalités de base d'un shell. Ce shell affiche un prompt, permet à l'utilisateur de saisir une commande, et exécute la commande correspondante en utilisant execve. Il gère également certaines commandes intégrées, telles que exit pour quitter le shell et env pour afficher les variables d'environnement.
+### **README.md**
+![Diagramme de flux](images/flowchart.png)
+```markdown
+```
+# Simple Shell
 
-Fonctionnalités
-Le shell fournit les fonctionnalités suivantes :
+## Description
+Le **Simple Shell** est un projet réalisé dans le cadre de la formation à Holberton School. Ce programme implémente un interpréteur de commandes Unix minimaliste en C. Il a pour objectif d'approfondir les concepts de programmation système et la gestion des processus en utilisant des fonctions Unix prsonalisé.
 
-Prompt interactif :
+---
 
-Affiche un prompt "$ " pour inviter l'utilisateur à entrer une commande.
-Gestion des commandes :
+## Fonctionnalités
+- **Mode interactif** :
+  - Affiche une invite (`$`) et attend les commandes utilisateur.
+- **Mode non interactif** :
+  - Exécute des commandes depuis une redirection ou un fichier.
+- **Gestion des commandes** :
+  - `exit` : Quitte le shell.
+  - `env` : Affiche les variables d'environnement.
+- **Gestion des erreurs** :
+  - Affiche un message clair si une commande est introuvable.
+- **Support des chemins relatifs et absolus pour les commandes.**
 
-Attend l'entrée d'une commande par l'utilisateur.
-Exécute les commandes externes en recherchant leur chemin d'exécution dans le répertoire courant ou dans le PATH.
-Commandes intégrées :
+---
+## Diagramme du fonctionnement du shell
 
-exit : Quitte le shell.
-env : Affiche les variables d'environnement actuelles.
-Gestion des erreurs :
+Voici un diagramme montrant le processus de fonctionnement du shell :
 
-Si la commande n'est pas trouvée, un message d'erreur est affiché.
-Le shell continue à s'exécuter après chaque commande.
-Gestion de la condition de fin de fichier (Ctrl+D) :
+```mermaid
+graph TD;
+    Start[Début du shell] --> A[Est-ce en mode interactif ?]
+    A -->|Oui| B[Affiche le prompt]
+    A -->|Non| C[Lecture de l'entrée standard]
+    B --> D[Lecture de l'entrée utilisateur]
+    C --> D
+    D --> E[La commande est-elle vide ?]
+    E -->|Oui| B
+    E -->|Non| F[Parsing et tokenisation de la commande]
+    F --> G[La commande est-elle executable?]
+    G -->|Oui| H[Exécuter]
+    G -->|Non| I[Recherche du chemin dans PATH]
+    I --> J[Commande trouvée ?]
+    J -->|Oui| K[Création d'un processus enfant]
+    J -->|Non| L[Afficher 'Commande introuvable']
+    K --> M[Exécution de la commande]
+    M --> N[Processus terminé]
+    L --> B
+    N --> A[Retour au prompt  ou lecture suivante ]
+    H --> A
+```
+## Compilation
+Pour compiler le programme, utilisez la commande suivante :
+```bash
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+```
 
-Si l'utilisateur appuie sur Ctrl+D, le shell se termine proprement.
-Installation
-Prérequis
-Système UNIX/Linux.
-Compilateur gcc pour compiler le programme.
-Une version de C conforme à la norme gnu89.
-Compilation
-Clonez le projet, puis compilez-le avec la commande suivante :
+---
 
-bash
-Copier le code
-git clone https://github.com/votre_utilisateur/simple_shell.git
-cd simple_shell
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 shell_03.c -o simple_shell
-Exécution
-Une fois compilé, vous pouvez lancer le shell avec :
+## Utilisation
+### Mode interactif
+Lancez le shell directement :
+```bash
+./hsh
+```
+Une invite (`$`) s'affichera. Entrez vos commandes, telles que `ls`, `pwd`, ou `env`.
 
-bash
-Copier le code
-./simple_shell
-Cela affichera un prompt "$ " et vous pourrez entrer des commandes.
+### Mode non interactif
+Passez des commandes via un fichier ou une redirection :
+```bash
+echo "/bin/ls" | ./hsh
+cat commands.txt | ./hsh
+```
 
-Commandes disponibles
-exit
-La commande exit permet de quitter le shell. Vous pouvez entrer :
+---
 
-bash
-Copier le code
-$ exit
-Le shell se fermera immédiatement.
-
-env
-La commande env affiche toutes les variables d'environnement actuelles.
-
-bash
-Copier le code
-$ env
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-HOME=/home/user
-LANG=en_US.UTF-8
-...
-Architecture
-Le projet est structuré comme suit :
-
-bash
-Copier le code
-simple_shell/
-├── shell_03.c      # Code principal du shell
-└── README.md        # Ce fichier
-Explication du code
-main
-La fonction main est la fonction principale qui gère la boucle du shell. Elle affiche un prompt, lit la commande entrée par l'utilisateur, et vérifie si la commande est exit ou env. Si c'est le cas, elle appelle les fonctions correspondantes. Si la commande est une commande externe, elle recherche le chemin de l'exécutable et l'exécute en utilisant execve.
-
-display_prompt
-Cette fonction affiche le prompt "$ " pour inviter l'utilisateur à entrer une commande.
-
-read_command
-Cette fonction lit une ligne de commande entrée par l'utilisateur et la renvoie. Elle gère également la condition de fin de fichier (Ctrl+D).
-
-parse_command
-Cette fonction sépare la commande et ses arguments, et renvoie un tableau de chaînes de caractères.
-
-get_command_path
-Cette fonction recherche le chemin complet de la commande entrée par l'utilisateur, en vérifiant d'abord si elle est située dans le répertoire courant ou dans les répertoires définis dans la variable d'environnement PATH.
-
-execute_command
-Cette fonction exécute la commande entrée en utilisant execve, en passant le chemin de la commande, ses arguments, et les variables d'environnement. Si la commande n'existe pas, un message d'erreur est affiché.
-
-is_exit_command
-Cette fonction vérifie si la commande entrée est exit.
-
-is_env_command
-Cette fonction vérifie si la commande entrée est env.
-
-print_env
-Cette fonction affiche toutes les variables d'environnement en parcourant la variable globale environ.
-
-Exemples d'utilisation
-Exemple 1 : Exécution d'une commande simple
-bash
-Copier le code
+## Exemples
+### Mode interactif
+```bash
 $ ls
-bin  etc  home  lib  usr
-Exemple 2 : Utilisation de la commande env
-bash
-Copier le code
-$ env
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-HOME=/home/user
-LANG=en_US.UTF-8
-...
-Exemple 3 : Utilisation de la commande exit
-bash
-Copier le code
-$ exit
-Le shell se ferme et vous revenez à l'invite de commande du terminal.
+AUTHORS      cpid.c          man_1_simple_shell  simple_shell.c  tools.c
+README.md    environement.c  modein.c            strchr.c
+char.c       exiten.c        modenoin.c          strtok.c
+condition.c  hsh             read.c              test_ls_2
+cpath.c      images          shell.h             toknlize.c
+$ pwd
+/home/hmeyd/holbertonschool-simple_shell
+$exit
+```
 
-Gestion des erreurs
-Le shell gère plusieurs erreurs courantes :
+### Mode non interactif
+```bash
+$ echo "/bin/ls" | ./hsh
+AUTHORS      cpid.c          man_1_simple_shell  simple_shell.c  tools.c
+README.md    environement.c  modein.c            strchr.c
+char.c       exiten.c        modenoin.c          strtok.c
+condition.c  hsh             read.c              test_ls_2
+cpath.c      images          shell.h             toknlize.c
+```
 
-Si une commande entrée n'existe pas, un message d'erreur est affiché :
-bash
-Copier le code
-$ unknown_command
-unknown_command: command not found
-Si execve échoue, un message d'erreur est affiché et le shell continue.
-Avertissement
-Ce shell est un projet éducatif conçu pour vous aider à comprendre comment fonctionne un interpréteur de commandes de base. Il n'implémente pas de fonctionnalités avancées comme les redirections, les tubes (pipes), ou les arguments complexes. Il se concentre sur les bases de l'exécution de commandes et de la gestion des erreurs.
+---
 
-Contribuer
-Les contributions au projet sont les bienvenues ! Si vous souhaitez améliorer ce shell, veuillez suivre les étapes ci-dessous :
+## Ressources utiles
+Voici quelques ressources pour approfondir les concepts abordés dans ce projet :
+- **[Manuels Unix](https://man7.org/linux/man-pages/)** : Documentation des appels système et commandes Unix.
+- **[GeeksforGeeks - System Programming](https://www.geeksforgeeks.org/system-programming/)** : Articles pédagogiques sur la programmation système.
+- **[Learn C Programming](https://www.learn-c.org/)** : Guide interactif pour apprendre le langage C.
 
-Fork le projet.
-Créez une branche pour votre fonctionnalité (git checkout -b feature/your-feature).
-Commitez vos modifications (git commit -am 'Ajout d’une nouvelle fonctionnalité').
-Poussez la branche sur votre fork (git push origin feature/your-feature).
-Créez une pull request pour discuter de vos modifications.
-Licence
-Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus d'informations.
+---
+
+## Auteurs
+- **Ahmed Salem H’meyd**
+  - Email : yyahmedsalm@gmail.com
+- **Noumane Bouqetyb**
+
+---

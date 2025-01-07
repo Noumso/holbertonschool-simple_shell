@@ -2,45 +2,35 @@
 
 /**
  * traiter_ligne - Traite la ligne lue par l'utilisateur.
- * @buffer: Le tampon qui contient la ligne entrée par l'utilisateur.
- * @taille_buffer: La taille maximale du tampon.
- * Return: Un tableau de chaînes de caractères représentant
+ * @buffer: Tampon contenant la commande entrée.
+ * Return: Tableau d'arguments ou NULL si aucune commande.
  */
-char **traiter_ligne(char *buffer, size_t taille_buffer)
+char **traiter_ligne(char *buffer)
 {
-	ssize_t n_lu;
 	char **args;
+	char *commande;
 
-	n_lu = read(STDIN_FILENO, buffer, taille_buffer);
-	if (n_lu == -1)
-	{
-		perror("read");
-		return (NULL);
-	}
-	if (n_lu == 0)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		exit(0);
-	}
-	if (buffer[n_lu - 1] == '\n')
-		buffer[n_lu - 1] = '\0';
-
-	if (buffer[0] == '\0')
-		return (NULL);
-	if (strcmp(buffer, "exit") == 0)
-	{
-		exit(0);
-	}
-	if (strcmp(buffer, "env") == 0)
-	{
-		executer_env();
-		return (0);
-	}
 	args = tknelize(buffer);
-	if (args == NULL || args[0] == NULL)
+	if (args == NULL)
 	{
+		return (NULL);
+	}
+
+
+	commande = chercher_commande(args[0]);
+	if (commande == NULL)
+	{
+		write(STDERR_FILENO, ": Commande introuvable\n", 23);
 		free(args);
 		return (NULL);
 	}
+
+
+	args[0] = commande;
+
+
+	creer_processus(args);
+	free(args);
+
 	return (args);
 }
