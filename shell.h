@@ -7,8 +7,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#define TAILLE_BUFFER 1024
+#define BUFSIZE 1024
 extern char **environ;
+#define DELIM " \t\r\n\a"
 
 void display_prompt(void);
 char *read_command(void);
@@ -36,4 +37,11 @@ void mode_non_interactif(void);
 char *_strchr(const char *s, int c);
 char *exitenv(char *buffer);
 ssize_t lire_entree(char *buffer);
+char *_getline();
+void hashtag_handle(char *buff);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void free_all(char **cmd, char *line);
+char *_memcpy(char *dest, char *src, unsigned int n);
+void *fill_an_array(void *a, int el, unsigned int len);
+void *_calloc(unsigned int size);
 #endif

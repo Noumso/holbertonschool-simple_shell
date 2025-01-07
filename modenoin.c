@@ -9,19 +9,17 @@
 void mode_non_interactif(void)
 {
 	char *ligne = NULL;
-	size_t taille = 0;
-	ssize_t n_lus;
 
-	while ((n_lus = getline(&ligne, &taille, stdin)) != -1)
+	while ((ligne = _getline()) != NULL)
 	{
-
-		if (n_lus > 0 && ligne[n_lus - 1] == '\n')
-			ligne[n_lus - 1] = '\0';
-
+		if (ligne[0] != '\0' && ligne[_strlen(ligne) - 1] == '\n')
+			ligne[_strlen(ligne) - 1] = '\0';
 
 		if (ligne[0] == '\0')
+		{
+			free(ligne);
 			continue;
-
+		}
 
 		if (traiter_ligne(ligne) == NULL)
 		{
