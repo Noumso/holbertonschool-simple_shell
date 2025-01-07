@@ -19,7 +19,7 @@ void mode_interactif(void)
             continue;
         }
         if (_strncmp(buffer, "exit", 4) == 0 &&
-            (buffer[4] == '\0' || buffer[4] == ' '))
+            (buffer[4] == '\0' || buffer[4] == ' ' || buffer[4] == '\n'))
         {
             free(buffer);
             break;
