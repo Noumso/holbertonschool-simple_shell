@@ -1,4 +1,4 @@
 /bin/ls
 /bin/ls
-ls
+exit
 cat
