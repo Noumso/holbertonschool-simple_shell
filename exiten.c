@@ -15,12 +15,12 @@ char *exitenv(char *buffer)
 {
 	if (_strncmp(buffer, "exit", 4) == 0)
 	{
-		exit(0); /* Quitte le programme */
+		exit(0);
 	}
 
 	if (_strncmp(buffer, "env", 3) == 0)
 	{
-		executer_env(); /* Affiche les variables d'environnement */
+		executer_env();
 		return (NULL);
 	}
 

@@ -90,22 +90,23 @@ char *_strdup(char *str)
 
 	return (str2);
 }
-	/**
-	 * _getenv - Récupère la valeur d'une variable d'environnement.
-	 * @name: Nom de la variable d'environnement.
-	 * Return: Valeur de la variable ou NULL si introuvable.
-	 */
-	char *_getenv(char *name)
-	{
-		size_t len = _strlen(name);
-		int i;
 
-		for (i = 0; environ[i]; i++)
+/**
+ * _getenv - Récupère la valeur d'une variable d'environnement.
+ * @name: Nom de la variable d'environnement.
+ * Return: Valeur de la variable ou NULL si introuvable.
+ */
+char *_getenv(char *name)
+{
+	size_t len = _strlen(name);
+	int i;
+
+	for (i = 0; environ[i]; i++)
+	{
+		if (_strncmp(name, environ[i], len) == 0 && environ[i][len] == '=')
 		{
-			if (_strncmp(name, environ[i], len) == 0 && environ[i][len] == '=')
-			{
-				return (environ[i] + len + 1);
-			}
+			return (environ[i] + len + 1);
 		}
-		return (NULL);
 	}
+	return (NULL);
+}

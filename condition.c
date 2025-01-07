@@ -3,7 +3,6 @@
 /**
  * traiter_ligne - Traite la ligne lue par l'utilisateur.
  * @buffer: Tampon contenant la commande entrée.
- * @taille_buffer: Taille maximale du tampon.
  * Return: Tableau d'arguments ou NULL si aucune commande.
  */
 char **traiter_ligne(char *buffer)
@@ -11,8 +10,6 @@ char **traiter_ligne(char *buffer)
 	char **args;
 	char *commande;
 
-
-	exitenv(buffer);
 	args = tknelize(buffer);
 	if (args == NULL)
 	{
