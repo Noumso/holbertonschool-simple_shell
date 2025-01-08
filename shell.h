@@ -9,13 +9,12 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-/* Déclaration des variables globales */
 extern char **environ;
 
-/* Prototypes des fonctions */
+/* Function prototypes */
 void execute_command(char *command);
+char *find_command_in_path(char *command);
 int command_exists(char *command);
 void handle_exit(void);
 void print_env(void);
-
 #endif /* SHELL_H */
