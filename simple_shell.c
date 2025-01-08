@@ -1,9 +1,13 @@
 #include "shell.h"
 
 /**
- * main - Entrée principale du programme.
+ * main - Entry point for the shell program.
  *
- * Return: 0 en cas de succès, ou un autre code en cas d'erreur.
+ * Return: Always 0.
+ *
+ * Description: This function continuously reads input commands
+ * from the user (or from a file in non-interactive mode), and
+ * executes them using the execute_command function.
  */
 int main(void)
 {
@@ -13,22 +17,26 @@ int main(void)
 
 	while (1)
 	{
-		/* Affiche le prompt */
-		write(STDOUT_FILENO, "($) ", 4);
+		if (isatty(STDIN_FILENO)) /* Interactive mode */
+			write(STDOUT_FILENO, "($) ", 4);
 
-		/* Lit la ligne de commande */
 		nread = getline(&line, &len, stdin);
-		if (nread == -1) /* Condition EOF (Ctrl+D) */
-		{
-			free(line);
-			exit(0);
-		}
+		if (nread == -1) /* End of file (Ctrl+D) */
+			break;
 
-		/* Supprime le saut de ligne */
+		/* Remove newline character */
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
-		/* Exécution de la commande */
+		/* Skip empty lines */
+		if (*line == '\0')
+			continue;
+
+		/* Check for built-in command "exit" */
+		if (strcmp(line, "exit") == 0)
+			break;
+
+		/* Execute the command */
 		execute_command(line);
 	}
 
