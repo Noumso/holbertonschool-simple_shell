@@ -6,12 +6,14 @@
  * les traite, cherche leur chemin complet si besoin, et les exécute.
  */
 
-void mode_non_interactif(void)
+void mode_non_interactif(char *nom)
 {
 	char *ligne = NULL;
+	int count = 0;
 
 	while ((ligne = _getline()) != NULL)
 	{
+		count++;
 		if (ligne[0] != '\0' && ligne[_strlen(ligne) - 1] == '\n')
 			ligne[_strlen(ligne) - 1] = '\0';
 
@@ -21,10 +23,7 @@ void mode_non_interactif(void)
 			continue;
 		}
 
-		if (traiter_ligne(ligne) == NULL)
-		{
-			write(STDERR_FILENO, "Erreur lors du traitement de la commande\n", 42);
-		}
+		traiter_ligne(ligne ,nom, count);
 	}
 
 	free(ligne);

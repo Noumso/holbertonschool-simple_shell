@@ -5,7 +5,7 @@
  * @buffer: Tampon contenant la commande entrée.
  * Return: Tableau d'arguments ou NULL si aucune commande.
  */
-char **traiter_ligne(char *buffer)
+char **traiter_ligne(char *buffer, char *nom, int count)
 {
 	char **args;
 	char *commande;
@@ -20,11 +20,15 @@ char **traiter_ligne(char *buffer)
 	commande = chercher_commande(args[0]);
 	if (commande == NULL)
 	{
-		write(STDERR_FILENO, ": Commande introuvable\n", 23);
+		write(STDERR_FILENO, nom, strlen(nom));
+		printf(": %d: ", count);
+		fflush(stdout);
+		write(STDERR_FILENO, args[0], strlen(args[0]));
+		printf(": not found\n");
+		fflush(stdout);
 		free(args);
 		return (NULL);
 	}
-
 
 	args[0] = commande;
 

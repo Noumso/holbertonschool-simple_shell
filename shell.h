@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <ctype.h>
 #define BUFSIZE 1024
 extern char **environ;
 #define DELIM " \t\r\n\a"
@@ -15,7 +16,7 @@ void display_prompt(void);
 char *read_command(void);
 void execute_command(char *command);
 void creer_processus(char **args);
-char **traiter_ligne(char *buffer);
+char **traiter_ligne(char *buffer, char *nom, int count);
 char **tknelize(char *buffer);
 char *verifier_commande(char **args);
 void executer_env(void);
@@ -32,8 +33,8 @@ int _strncmp(const char *s1, const char *s2, size_t n);
 char *_strdup(char *str);
 char *_getenv(char *name);
 char *chercher_commande(char *commande);
-void mode_interactif(void);
-void mode_non_interactif(void);
+void mode_interactif(char *name);
+void mode_non_interactif(char *name);
 char *_strchr(const char *s, int c);
 char *exitenv(char *buffer);
 ssize_t lire_entree(char *buffer);

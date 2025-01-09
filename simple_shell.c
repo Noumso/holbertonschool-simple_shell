@@ -8,18 +8,16 @@
  * Return: Toujours 0 (succès).
  */
 
-int main(void)
+int main(__attribute__((unused)) int argc, char **argv)
 {
 	/* Vérifie si stdin est connecté à un terminal pour déterminer le mode */
 	if (isatty(STDIN_FILENO))
 	{
-		mode_interactif();
+		mode_interactif(argv[0]);
 	}
 	else
 	{
-		mode_non_interactif();
+		mode_non_interactif(argv[0]);
 	}
-
 	return (0);
 }
-
