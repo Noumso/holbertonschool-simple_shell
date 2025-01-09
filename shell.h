@@ -8,10 +8,15 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <ctype.h>
+#include <errno.h>
 #define BUFSIZE 1024
 extern char **environ;
 #define DELIM " \t\r\n\a"
 
+int _isdigit(int c);
+ssize_t write_custom(int fd, char *buf, size_t count);
+void *my_malloc(size_t size);
+void my_free(void *ptr);
 void display_prompt(void);
 char *read_command(void);
 void execute_command(char *command);
@@ -45,4 +50,6 @@ void free_all(char **cmd, char *line);
 char *_memcpy(char *dest, char *src, unsigned int n);
 void *fill_an_array(void *a, int el, unsigned int len);
 void *_calloc(unsigned int size);
+void *_malloc(size_t size);
+void _perror(char *msg);
 #endif

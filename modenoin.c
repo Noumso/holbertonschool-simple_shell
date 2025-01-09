@@ -2,7 +2,7 @@
 
 /**
  * mode_non_interactif - Gère l'exécution en mode non interactif.
- * Lit les commandes ligne par ligne depuis l'entrée standard,
+ * @nom: Lit les commandes ligne par ligne depuis l'entrée standard,
  * les traite, cherche leur chemin complet si besoin, et les exécute.
  */
 
@@ -19,18 +19,18 @@ void mode_non_interactif(char *nom)
 
 		if (ligne[0] == '\0')
 		{
-			free(ligne);
+			my_free(ligne);
 			continue;
 		}
 
-		traiter_ligne(ligne ,nom, count);
+		traiter_ligne(ligne, nom, count);
 	}
 
-	free(ligne);
+	my_free(ligne);
 
 	if (!feof(stdin))
 	{
-		perror("Erreur de lecture sur stdin");
-		exit(EXIT_FAILURE);
+		_perror("Erreur de lecture sur stdin");
+		exitenv("exit");
 	}
 }

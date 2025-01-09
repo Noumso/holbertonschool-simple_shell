@@ -10,13 +10,13 @@
 
 char **tknelize(char *buffer)
 {
-	char **args = malloc(64 * sizeof(char *));
+	char **args = _malloc(64 * sizeof(char *));
 	char *token;
 	int i = 0;
 
 	if (!args)
 	{
-		perror("malloc");
+		_perror("malloc");
 		return (NULL);
 	}
 
@@ -27,10 +27,10 @@ char **tknelize(char *buffer)
 
 		if (i >= 64)
 		{
-			args = realloc(args, (i + 1) * sizeof(char *));
+			args = _realloc(args,  64, i + 1);
 			if (!args)
 			{
-				perror("realloc");
+				_perror("realloc");
 				return (NULL);
 			}
 		}

@@ -19,12 +19,12 @@ char *_getline()
 		rd = read(STDIN_FILENO, &c, 1);
 		if (rd == 0)
 		{
-			free(buff);
-			exit(EXIT_SUCCESS);
+			my_free(buff);
+			exitenv("exit");
 		}
 		if (rd == -1)
 		{
-			free(buff);
+			my_free(buff);
 			return (NULL);
 		}
 		buff[i++] = c;
@@ -40,7 +40,7 @@ char *_getline()
 	hashtag_handle(buff);
 	if (buff[0] == '\n')
 	{
-		free(buff);
+		my_free(buff);
 		return ("\0");
 	}
 
@@ -65,4 +65,3 @@ void hashtag_handle(char *buff)
 		}
 	}
 }
-

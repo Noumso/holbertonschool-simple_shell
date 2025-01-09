@@ -3,6 +3,8 @@
 /**
  * traiter_ligne - Traite la ligne lue par l'utilisateur.
  * @buffer: Tampon contenant la commande entrée.
+ * @nom: nom du prohgramme
+ * @count: un compteur
  * Return: Tableau d'arguments ou NULL si aucune commande.
  */
 char **traiter_ligne(char *buffer, char *nom, int count)
@@ -26,7 +28,7 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 		write(STDERR_FILENO, args[0], strlen(args[0]));
 		printf(": not found\n");
 		fflush(stdout);
-		free(args);
+		my_free(args);
 		return (NULL);
 	}
 
@@ -34,7 +36,7 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 
 
 	creer_processus(args);
-	free(args);
+	my_free(args);
 
 	return (args);
 }

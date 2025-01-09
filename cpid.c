@@ -13,15 +13,15 @@ void creer_processus(char **args)
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("Erreur fork");
+		_perror("Erreur fork");
 		return;
 	}
 	if (pid == 0)
 	{
 		if (execve(args[0], args, environ) == -1)
 		{
-			perror(args[0]);
-			exit(EXIT_FAILURE);
+			_perror(args[0]);
+			exitenv("exit");
 		}
 	}
 	else

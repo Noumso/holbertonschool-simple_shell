@@ -21,3 +21,20 @@ char *_strchr(const char *s, int c)
 
 	return (NULL);
 }
+
+/**
+ * _malloc - Fonction personnalisée pour allouer de la mémoire
+ * @size: Taille de la mémoire à allouer en octets
+ *
+ * Return: Pointeur vers la mémoire allouée
+ */
+void *_malloc(size_t size)
+{
+	void *ptr = malloc(size);
+
+	if (ptr == NULL)
+	{
+		exitenv("exit 1");
+	}
+	return (ptr);
+}

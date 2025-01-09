@@ -10,9 +10,17 @@ void executer_env(void)
 	env = environ;
 	while (*env)
 	{
-		write(STDOUT_FILENO, *env, _strlen(*env));
-		write(STDOUT_FILENO, "\n", 1);
+		if (write_custom(STDOUT_FILENO, *env, _strlen(*env)) == -1)
+		{
+			_perror("Erreur d'écriture de l'environnement");
+			return;
+		}
+		if (write_custom(STDOUT_FILENO, "\n", 1) == -1)
+		{
+			_perror("Erreur d'écriture du saut de ligne");
+			return;
+		}
+
 		env++;
 	}
 }
-

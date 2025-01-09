@@ -15,21 +15,21 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 		return (ptr);
 	if (new_size == 0 && ptr)
 	{
-		free(ptr);
+		my_free(ptr);
 		return (NULL);
 	}
-	result = malloc(new_size);
+	result = _malloc(new_size);
 	if (result == NULL)
 		return (NULL);
 	if (ptr == NULL)
 	{
 		fill_an_array(result, '\0', new_size);
-		free(ptr);
+		my_free(ptr);
 	}
 	else
 	{
 		_memcpy(result, ptr, old_size);
-		free(ptr);
+		my_free(ptr);
 	}
 	return (result);
 
@@ -42,8 +42,8 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
  */
 void free_all(char **cmd, char *line)
 {
-	free(cmd);
-	free(line);
+	my_free(cmd);
+	my_free(line);
 	cmd = NULL;
 	line = NULL;
 }
@@ -96,10 +96,10 @@ void *_calloc(unsigned int size)
 	unsigned int i;
 
 	if (size == 0)
-	return (NULL);
-	a = malloc(size);
+		return (NULL);
+	a = _malloc(size);
 	if (a == NULL)
-	return (NULL);
+		return (NULL);
 	for (i = 0; i < size; i++)
 	{
 		a[i] = '\0';
