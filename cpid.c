@@ -21,7 +21,7 @@ void creer_processus(char **args)
 		if (execve(args[0], args, environ) == -1)
 		{
 			_perror(args[0]);
-			exitenv("exit");
+			exit(127);
 		}
 	}
 	else

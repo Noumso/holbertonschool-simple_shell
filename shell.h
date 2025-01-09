@@ -41,7 +41,7 @@ char *chercher_commande(char *commande);
 void mode_interactif(char *name);
 void mode_non_interactif(char *name);
 char *_strchr(const char *s, int c);
-char *exitenv(char *buffer);
+char *exitenv(char *buffer, char *nom, int count);
 ssize_t lire_entree(char *buffer);
 char *_getline();
 void hashtag_handle(char *buff);
@@ -52,4 +52,5 @@ void *fill_an_array(void *a, int el, unsigned int len);
 void *_calloc(unsigned int size);
 void *_malloc(size_t size);
 void _perror(char *msg);
+void writext(char *nom, int count, char *args);
 #endif

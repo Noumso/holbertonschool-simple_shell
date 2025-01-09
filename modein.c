@@ -21,7 +21,8 @@ void mode_interactif(char *nom)
 		}
 		if (_strncmp(buffer, "exit", 4) == 0)
 		{
-			buffer = exitenv(buffer);
+			buffer = exitenv(buffer, nom, count);
+			continue;
 		}
 		if (_strncmp(buffer, "env", 3) == 0 &&
 				(buffer[3] == '\0' || buffer[3] == ' '))

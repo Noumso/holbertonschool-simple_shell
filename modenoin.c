@@ -31,6 +31,6 @@ void mode_non_interactif(char *nom)
 	if (!feof(stdin))
 	{
 		_perror("Erreur de lecture sur stdin");
-		exitenv("exit");
+		exit(0);
 	}
 }

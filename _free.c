@@ -14,7 +14,7 @@ void *my_malloc(size_t size)
 
 	if (ptr == NULL)
 	{
-		exitenv("exit 1");
+		exit (1);
 	}
 	return (ptr);
 }

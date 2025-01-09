@@ -20,7 +20,7 @@ char *_getline()
 		if (rd == 0)
 		{
 			my_free(buff);
-			exitenv("exit");
+			exit(127);
 		}
 		if (rd == -1)
 		{

@@ -1,7 +1,4 @@
 #include "shell.h"
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 /**
  * exitenv - Gère les commandes spéciales et tokenize une ligne de commande
@@ -12,7 +9,7 @@
  * Return: Sous-chaîne d'arguments ou NULL si la commande est "exit".
  */
 
-char *exitenv(char *buffer)
+char *exitenv(char *buffer,char *nom, int count)
 {
 	size_t len;
 	size_t i;
@@ -27,28 +24,27 @@ char *exitenv(char *buffer)
 		{
 			exit(atoi(buffer + 5));
 		}
-		else
-		{
-			exit(0);
-		}
 	}
 	len = _strlen(buffer) - 4;
+	if (len == 1)
+	{
+		exit(127);
+	}
 	if (len > 0)
 	{
-		args = _malloc((len + 1) * sizeof(char));
+		args = _malloc((len + 1) * sizeof(char));	
 		if (args == NULL)
 		{
 			_perror("malloc");
-			return (NULL);
 		}
-		for (i = 4; i < len; i++, j++)
+		for (i = 4; i < len + 3; i++, j++)
 		{
 			args[j] = buffer[i];
 		}
 		args[j] = '\0';
-		return (args);
+		writext(nom, count, args);
 	}
-	return (NULL);
+	return (args);
 }
 
 
@@ -61,4 +57,18 @@ char *exitenv(char *buffer)
 int _isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+
+/**
+ * writext - Vérifie si un caractère est un chiffre
+ * @nom: Caractère à vérifier
+ * @count: fonction détermine si un caractère 
+ * @args: donné est un chiffre (0-9).
+ * Return: 1 si le caractère est un chiffre, 0 sinon.
+ */
+void writext(char *nom, int count, char *args)
+{
+	write(STDERR_FILENO, nom, strlen(nom));
+	printf(": %d: exit: Illegal number: %s", count,args);
 }
