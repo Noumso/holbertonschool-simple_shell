@@ -16,5 +16,8 @@ void execute_command(char *command);
 char *find_command_in_path(char *command);
 int command_exists(char *command);
 void handle_exit(void);
-void print_env(void);
+int tokenize_command(char *command, char **argv);
+char *resolve_command_path(char *command);
+void execute_fork(char *resolved_path, char **argv);
+void print_environment(void);
 #endif /* SHELL_H */
