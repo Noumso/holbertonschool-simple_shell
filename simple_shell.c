@@ -2,29 +2,27 @@
 
 /**
  * main - Entry point for the shell program.
- *@argc: nombre d'argument.
- *@argv: les argument.
+ *
  * Return: Always 0.
  *
  * Description: This function continuously reads input commands
  * from the user (or from a file in non-interactive mode), and
  * executes them using the execute_command function.
  */
-int main(__attribute__((unused)) int argc, char **argv)
+int main(void)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
-	int count = 0;
 
 	while (1)
 	{
-		count++;
 		if (isatty(STDIN_FILENO)) /* Interactive mode */
 			write(STDOUT_FILENO, "($) ", 4);
+
 		nread = getline(&line, &len, stdin);
 		if (nread == -1) /* End of file (Ctrl+D) */
-			exit(127);
+			break;
 
 		/* Remove newline character */
 		if (line[nread - 1] == '\n')
@@ -33,14 +31,13 @@ int main(__attribute__((unused)) int argc, char **argv)
 		/* Skip empty lines */
 		if (*line == '\0')
 			continue;
-		if (strncmp(line, "exit", 4) == 0)
-		{
-			my_exit(argv[0], count, line);
-		continue;
-		}
+
+		/* Check for built-in command "exit" */
+		if (strcmp(line, "exit") == 0)
+			break;
 
 		/* Execute the command */
-		execute_command(line, count, argv[0]);
+		execute_command(line);
 	}
 
 	free(line);

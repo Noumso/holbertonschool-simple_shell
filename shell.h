@@ -12,14 +12,13 @@
 extern char **environ;
 
 /* Function prototypes */
-void execute_command(char *command, int count, char *nom);
+void execute_command(char *command);
 char *find_command_in_path(char *command);
 int command_exists(char *command);
-void my_exit(char *nom, int count, char *line);
+void handle_exit(void);
 int tokenize_command(char *command, char **argv);
 char *resolve_command_path(char *command);
 void execute_fork(char *resolved_path, char **argv);
 void print_environment(void);
 void print_env(void);
-int _isdigit(int c);
-#endif /* SHELL_H */
+#endif /* SHELL_H *gg=G*/

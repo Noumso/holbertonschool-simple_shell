@@ -2,16 +2,14 @@
 
 /**
  * execute_command - Executes a given command.
- * @command: The command to execute
- * @count: le nombre d'execution.
- * @nom: nom de programme.
+ * @command: The command to execute.
  *
  * Description: This function creates a child process, uses `execve` to
  * execute the command, and handles the command's arguments.
  * It also handles the special case for the `env` command
  * to print environment variables.
  */
-void execute_command(char *command, int count, char *nom)
+void execute_command(char *command)
 {
 	char *argv[1024]; /* Array for the command and its arguments */
 	char *resolved_path;
@@ -38,7 +36,7 @@ void execute_command(char *command, int count, char *nom)
 	resolved_path = resolve_command_path(argv[0]);
 	if (resolved_path == NULL)
 	{
-		printf("%s: %d: %s: not found\n", nom, count, argv[0]);
+		fprintf(stderr, "hsh: command not found: %s\n", argv[0]);
 		return;
 	}
 
