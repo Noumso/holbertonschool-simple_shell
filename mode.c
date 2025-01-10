@@ -144,7 +144,6 @@ void mode_non_interactif(char *nom)
 		}
 		traiter_ligne(ligne, nom, count);
 	}
-	free(ligne);
 
 
 	if (nread == -1 && !feof(stdin))

@@ -29,8 +29,6 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 		fflush(stdout);
 		write(STDERR_FILENO, args[0], strlen(args[0]));
 		printf(": not found\n");
-		fflush(stdout);
-		free(args);
 		return (NULL);
 	}
 
