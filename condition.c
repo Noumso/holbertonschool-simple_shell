@@ -146,10 +146,6 @@ char **tknelize(char *buffer)
 	while (token)
 	{
 		args[i++] = token;
-
-		printf("%s\n", token);
-
-
 		if (i >= tokens_size)
 		{
 			tokens_size += INITIAL_TOKENS_SIZE;
