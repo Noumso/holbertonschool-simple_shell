@@ -9,11 +9,12 @@
  * from the user (or from a file in non-interactive mode), and
  * executes them using the execute_command function.
  */
-int main(void)
+int main(__attribute__((unused)) int argc, char **argv)
 {
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
+	int count = 0;
 
 	while (1)
 	{
@@ -33,8 +34,9 @@ int main(void)
 			continue;
 
 		/* Check for built-in command "exit" */
-		if (strcmp(line, "exit") == 0)
-			break;
+		if (strncmp(line, "exit", 4) == 0)
+			my_exit(argv[0], count ,line);
+		continue;
 
 		/* Execute the command */
 		execute_command(line);
