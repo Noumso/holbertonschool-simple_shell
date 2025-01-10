@@ -23,13 +23,8 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 
 	commande = chercher_commande(args[0]);
 	if (commande == NULL)
-	{
-		/*write(STDERR_FILENO, nom, strlen(nom));
-		printf(": %d: ", count);
-		fflush(stdout);
-		write(STDERR_FILENO, args[0], strlen(args[0]));
-		printf(": not found\n");*/
-		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", nom, count, args[0]);
+	{	
+		printf("%s: %d: %s: not found\n", nom, count, args[0]);
 		return (NULL);
 	}
 
@@ -167,21 +162,40 @@ char **tknelize(char *buffer)
 }
 
 /**
- * _getenv - Récupère la valeur d'une variable d'environnement.
- * @name: Nom de la variable d'environnement.
- * Return: Valeur de la variable ou NULL si introuvable.
+ * _getenv - Gets The Value Of Enviroment Variable By Name
+ * @name: Environment Variable Name
+ * Return: The Value of the Environment Variable Else NULL.
  */
 char *_getenv(char *name)
 {
-	size_t len = strlen(name);
-	int i;
+	size_t nl, vl;
+	char *value;
+	int i, x, j;
 
-	for (i = 0; environ[i]; i++)
+	nl = strlen(name);
+	for (i = 0 ; environ[i]; i++)
 	{
-		if (strncmp(name, environ[i], len) == 0 && environ[i][len] == '=')
+		if (strncmp(name, environ[i], nl) == 0)
 		{
-			return (environ[i] + len + 1);
+			vl = strlen(environ[i]) - nl;
+			value = malloc(sizeof(char) * vl);
+			if (!value)
+			{
+				free(value);
+				perror("unable to alloc");
+				return (NULL);
+			}
+
+			j = 0;
+			for (x = nl + 1; environ[i][x]; x++, j++)
+			{
+				value[j] = environ[i][x];
+			}
+			value[j] = '\0';
+
+			return (value);
 		}
 	}
+
 	return (NULL);
 }
