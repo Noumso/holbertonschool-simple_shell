@@ -24,11 +24,12 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 	commande = chercher_commande(args[0]);
 	if (commande == NULL)
 	{
-		write(STDERR_FILENO, nom, strlen(nom));
+		/*write(STDERR_FILENO, nom, strlen(nom));
 		printf(": %d: ", count);
 		fflush(stdout);
 		write(STDERR_FILENO, args[0], strlen(args[0]));
-		printf(": not found\n");
+		printf(": not found\n");*/
+		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", nom, count, args[0]);
 		return (NULL);
 	}
 
