@@ -5,5 +5,5 @@
  */
 void handle_exit(void)
 {
-	exit(0);
+	exit(127);
 }
