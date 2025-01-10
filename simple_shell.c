@@ -2,7 +2,8 @@
 
 /**
  * main - Entry point for the shell program.
- *
+ *@argc: nombre d'argument.
+ *@argv: les argument.
  * Return: Always 0.
  *
  * Description: This function continuously reads input commands
@@ -18,7 +19,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 
 	while (1)
 	{
-		count ++;
+		count++;
 		if (isatty(STDIN_FILENO)) /* Interactive mode */
 			write(STDOUT_FILENO, "($) ", 4);
 		nread = getline(&line, &len, stdin);
@@ -34,7 +35,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			continue;
 		if (strncmp(line, "exit", 4) == 0)
 		{
-			my_exit(argv[0], count ,line);
+			my_exit(argv[0], count, line);
 		continue;
 		}
 

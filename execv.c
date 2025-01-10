@@ -2,7 +2,9 @@
 
 /**
  * execute_command - Executes a given command.
- * @command: The command to execute.
+ * @command: The command to execute
+ * @count: le nombre d'execution.
+ * @nom: nom de programme.
  *
  * Description: This function creates a child process, uses `execve` to
  * execute the command, and handles the command's arguments.

@@ -1,7 +1,10 @@
 #include "shell.h"
 
 /**
- * handle_exit - Gère la commande interne 'exit'.
+ * my_exit - Gère la commande interne 'exit'.
+ * @nom: nom de programme.
+ * @count: le nombre d'execution.
+ * @line: le commande.
  */
 void my_exit(char *nom, int count, char *line)
 {
