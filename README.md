@@ -111,5 +111,5 @@ Voici quelques ressources pour approfondir les concepts abordés dans ce projet�
 - **Ahmed Salem H’meyd**
   - Email : yyahmedsalm@gmail.com
 - **Noumane Bouqetyb**
-
+  - Email : noumane.82300@gmail.com
 ---
