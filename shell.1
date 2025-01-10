@@ -1,0 +1,142 @@
+.TH SHELL 1 "January 2025"
+.SH NAME
+shell \- A simple command shell program
+
+.SH SYNOPSIS
+.B shell
+[\fIcommand\fR]
+
+.SH DESCRIPTION
+The shell program allows you to run commands, check their existence, handle built-in commands like `exit`, and work with environment variables.
+
+.SH FUNCTIONS
+
+.TP
+.B command_exists
+(int command_exists(char *command))
+Check if a command exists. This function checks if the given command is available on the system path or is a valid file.
+
+.SH PARAMETERS
+\fIcommand\fR:
+A string representing the command or file path to check.
+
+.SH RETURN VALUE
+Returns 1 if the command exists, 0 otherwise.
+
+.TP
+.B print_env
+(void print_env(void))
+Prints the environment variables to the standard output.
+
+.TP
+.B execute_command
+(void execute_command(char *command))
+Executes a given command by forking a child process and calling execve. Special cases are handled (like the "env" command).
+
+.SH PARAMETERS
+\fIcommand\fR:
+A string containing the command to execute.
+
+.SH DESCRIPTION
+This function resolves the full path of the command, creates arguments using the `tokenize_command` function, and calls `execve` to execute the command. If the `env` command is entered, it calls `print_environment` instead.
+
+.TP
+.B tokenize_command
+(int tokenize_command(char *command, char **argv))
+Splits the input command string into arguments (tokens).
+
+.SH PARAMETERS
+\fIcommand\fR:
+A string representing the command to tokenize.
+
+\fIargv\fR:
+An array where the arguments will be stored.
+
+.SH RETURN VALUE
+Returns the number of arguments parsed.
+
+.TP
+.B resolve_command_path
+(char *resolve_command_path(char *command))
+Resolves the command's path by searching the directories listed in the system's PATH variable.
+
+.SH PARAMETERS
+\fIcommand\fR:
+The command name (without path).
+
+.SH RETURN VALUE
+Returns the resolved path of the command or NULL if not found.
+
+.TP
+.B execute_fork
+(void execute_fork(char *resolved_path, char **argv))
+Forks a child process to execute the command using `execve`.
+
+.SH PARAMETERS
+\fIresolved_path\fR:
+The full path to the command to execute.
+
+\fIargv\fR:
+The arguments array for the command.
+
+.TP
+.B print_environment
+(void print_environment(void))
+Prints all the environment variables, one per line.
+
+.TP
+.B handle_exit
+(void handle_exit(void))
+Handles the internal `exit` command, terminating the shell program.
+
+.TP
+.B find_command_in_path
+(char *find_command_in_path(char *command))
+Searches for the command in directories listed in the PATH environment variable.
+
+.SH PARAMETERS
+\fIcommand\fR:
+The command to search for.
+
+.SH RETURN VALUE
+Returns the full path of the command if found, or NULL if not found.
+
+.TP
+.B main
+(int main(void))
+Entry point for the shell program. It reads input from the user and executes commands.
+
+.SH RETURN VALUE
+Always returns 0.
+
+.SH EXAMPLES
+
+.TP
+Execute a command:
+.nf
+$ shell
+($) ls
+.total 12
+-rwxr-xr-x 1 user user 1234 Jan 10 10:10 program
+$ exit
+.fi
+
+.TP
+Exit the shell:
+.nf
+$ shell
+($) exit
+.fi
+
+.SH ERROR HANDLING
+If the command cannot be executed, the shell will print an error message with the format:
+.nf
+hsh: command not found: <command>
+.fi
+The "exit" command terminates the shell program immediately.
+
+.SH SEE ALSO
+.B execve(2)
+.B fork(2)
+.B wait(2)
+
