@@ -12,7 +12,7 @@
 extern char **environ;
 
 /* Function prototypes */
-void execute_command(char *command);
+void execute_command(char *command, int count, char *nom);
 char *find_command_in_path(char *command);
 int command_exists(char *command);
 void my_exit(char *nom, int count, char *line);

@@ -9,7 +9,7 @@
  * It also handles the special case for the `env` command
  * to print environment variables.
  */
-void execute_command(char *command)
+void execute_command(char *command, int count, char *nom)
 {
 	char *argv[1024]; /* Array for the command and its arguments */
 	char *resolved_path;
@@ -36,7 +36,7 @@ void execute_command(char *command)
 	resolved_path = resolve_command_path(argv[0]);
 	if (resolved_path == NULL)
 	{
-		fprintf(stderr, "hsh: command not found: %s\n", argv[0]);
+		printf("%s: %d: %s: not found\n", nom, count, argv[0]);
 		return;
 	}
 

@@ -23,7 +23,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 			write(STDOUT_FILENO, "($) ", 4);
 		nread = getline(&line, &len, stdin);
 		if (nread == -1) /* End of file (Ctrl+D) */
-			break;
+			exit(127);
 
 		/* Remove newline character */
 		if (line[nread - 1] == '\n')
@@ -39,7 +39,7 @@ int main(__attribute__((unused)) int argc, char **argv)
 		}
 
 		/* Execute the command */
-		execute_command(line);
+		execute_command(line, count, argv[0]);
 	}
 
 	free(line);
