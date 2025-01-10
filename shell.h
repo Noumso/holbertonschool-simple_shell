@@ -25,4 +25,5 @@ char *chercher_commande(char *commande);
 void mode_interactif(char *name);
 void mode_non_interactif(char *name);
 char *exitenv(char *buffer);
+void free_args(char **args);
 #endif

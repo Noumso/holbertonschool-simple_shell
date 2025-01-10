@@ -67,7 +67,6 @@ void mode_interactif(char *nom)
 
 		traiter_ligne(buffer, nom, count);
 	}
-	free(buffer);
 }
 
 

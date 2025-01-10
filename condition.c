@@ -3,11 +3,23 @@
 #define INITIAL_TOKENS_SIZE 64
 
 /**
+ * free_args - Libère un tableau de tokens.
+ * @args: Tableau de tokens à libérer.
+ */
+void free_args(char **args)
+{
+	if (args)
+	{
+		free(args);
+	}
+}
+
+/**
  * traiter_ligne - Traite la ligne lue par l'utilisateur.
  * @buffer: Tampon contenant la commande entrée.
- * @nom: nom du prohgramme
- * @count: un compteur
- * Return: Tableau d'arguments ou NULL si aucune commande.
+ * @nom: Nom du programme.
+ * @count: Un compteur.
+ * Return: Tableau d'arguments ou NULL si aucune commande ou erreur.
  */
 char **traiter_ligne(char *buffer, char *nom, int count)
 {
@@ -20,20 +32,24 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 		free(buffer);
 		return (NULL);
 	}
-
-
 	commande = chercher_commande(args[0]);
 	if (commande == NULL)
 	{
 		printf("%s: %d: %s: not found\n", nom, count, args[0]);
+		free_args(args);
 		return (NULL);
 	}
-
-	args[0] = commande;
+	args[0] = strdup(commande);
 	free(commande);
-
+	if (!args[0])
+	{
+		perror("strdup");
+		free_args(args);
+		return (NULL);
+	}
 	creer_processus(args);
 	free(buffer);
+
 	return (args);
 }
 
@@ -117,12 +133,12 @@ void creer_processus(char **args)
 	}
 }
 
+
 /**
  * tknelize - Divise une chaîne en tokens.
- * @buffer: Chaîne de caractères à diviser.
+ * @buffer: Chaîne de caractères à diviser (l'appelant gère sa mémoire).
  * Return: Tableau de tokens ou NULL en cas d'erreur.
  */
-
 char **tknelize(char *buffer)
 {
 	int i = 0, tokens_size = 64;
@@ -134,7 +150,6 @@ char **tknelize(char *buffer)
 	if (!args)
 	{
 		perror("malloc");
-		free(args);
 		return (NULL);
 	}
 
@@ -144,13 +159,12 @@ char **tknelize(char *buffer)
 		args[i++] = token;
 		if (i >= tokens_size)
 		{
-			tokens_size += 1;
+			tokens_size *= 2;
 			temp = realloc(args, tokens_size * sizeof(char *));
 			if (!temp)
 			{
 				perror("realloc");
-				free(buffer);
-				free(temp);
+				free_args(args);
 				return (NULL);
 			}
 			args = temp;
@@ -158,9 +172,8 @@ char **tknelize(char *buffer)
 
 		token = strtok(NULL, DELIM);
 	}
-	free(buffer);
-	free(temp);
-	args[i] = NULL;
+
+	args[i] = NULL; /* Terminer le tableau par NULL */
 	return (args);
 }
 
