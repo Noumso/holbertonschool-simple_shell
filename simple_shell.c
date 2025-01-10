@@ -18,9 +18,9 @@ int main(__attribute__((unused)) int argc, char **argv)
 
 	while (1)
 	{
+		count ++;
 		if (isatty(STDIN_FILENO)) /* Interactive mode */
 			write(STDOUT_FILENO, "($) ", 4);
-
 		nread = getline(&line, &len, stdin);
 		if (nread == -1) /* End of file (Ctrl+D) */
 			break;
@@ -32,11 +32,11 @@ int main(__attribute__((unused)) int argc, char **argv)
 		/* Skip empty lines */
 		if (*line == '\0')
 			continue;
-
-		/* Check for built-in command "exit" */
 		if (strncmp(line, "exit", 4) == 0)
+		{
 			my_exit(argv[0], count ,line);
 		continue;
+		}
 
 		/* Execute the command */
 		execute_command(line);
