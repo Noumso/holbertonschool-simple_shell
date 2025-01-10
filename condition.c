@@ -17,23 +17,23 @@ char **traiter_ligne(char *buffer, char *nom, int count)
 	args = tknelize(buffer);
 	if (args == NULL)
 	{
+		free(buffer);
 		return (NULL);
 	}
 
 
 	commande = chercher_commande(args[0]);
 	if (commande == NULL)
-	{	
+	{
 		printf("%s: %d: %s: not found\n", nom, count, args[0]);
 		return (NULL);
 	}
 
 	args[0] = commande;
-
+	free(commande);
 
 	creer_processus(args);
-	free(args);
-
+	free(buffer);
 	return (args);
 }
 
@@ -58,7 +58,8 @@ char *chercher_commande(char *commande)
 	}
 	path = _getenv("PATH");
 	if (!path)
-		return (NULL);
+		free(path);
+	return (NULL);
 	path_copy = strdup(path);
 	repertoire = strtok(path_copy, ":");
 	while (repertoire)
@@ -66,7 +67,7 @@ char *chercher_commande(char *commande)
 		chemin_complet = malloc(strlen(repertoire) + longueur_commande + 2);
 		if (!chemin_complet)
 		{
-			free(path_copy);
+			free(chemin_complet);
 			return (NULL);
 		}
 		strcpy(chemin_complet, repertoire);
@@ -82,9 +83,9 @@ char *chercher_commande(char *commande)
 		repertoire = strtok(NULL, ":");
 	}
 	free(path_copy);
+	free(path);
 	return (NULL);
 }
-
 
 
 /**
@@ -124,7 +125,7 @@ void creer_processus(char **args)
 
 char **tknelize(char *buffer)
 {
-	int i = 0, tokens_size = INITIAL_TOKENS_SIZE;
+	int i = 0, tokens_size = 64;
 	char **args;
 	char *token;
 	char **temp;
@@ -133,6 +134,7 @@ char **tknelize(char *buffer)
 	if (!args)
 	{
 		perror("malloc");
+		free(args);
 		return (NULL);
 	}
 
@@ -142,12 +144,13 @@ char **tknelize(char *buffer)
 		args[i++] = token;
 		if (i >= tokens_size)
 		{
-			tokens_size += INITIAL_TOKENS_SIZE;
+			tokens_size += 1;
 			temp = realloc(args, tokens_size * sizeof(char *));
 			if (!temp)
 			{
 				perror("realloc");
-				free(args);
+				free(buffer);
+				free(temp);
 				return (NULL);
 			}
 			args = temp;
@@ -155,8 +158,8 @@ char **tknelize(char *buffer)
 
 		token = strtok(NULL, DELIM);
 	}
-
-
+	free(buffer);
+	free(temp);
 	args[i] = NULL;
 	return (args);
 }
@@ -192,10 +195,8 @@ char *_getenv(char *name)
 				value[j] = environ[i][x];
 			}
 			value[j] = '\0';
-
 			return (value);
 		}
 	}
-
 	return (NULL);
 }

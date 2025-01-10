@@ -55,6 +55,7 @@ void mode_interactif(char *nom)
 		{
 			args = exitenv(buffer);
 			writext(nom, count, args);
+			free(args);
 			continue;
 		}
 		if (strncmp(buffer, "env", 3) == 0 &&
@@ -63,6 +64,7 @@ void mode_interactif(char *nom)
 			executer_env();
 			continue;
 		}
+
 		traiter_ligne(buffer, nom, count);
 	}
 	free(buffer);
@@ -105,6 +107,7 @@ char *exitenv(char *buffer)
 		if (args == NULL)
 		{
 			perror("malloc");
+			free(args);
 		}
 		for (i = 5; i < len + 4; i++, j++)
 		{
@@ -114,7 +117,6 @@ char *exitenv(char *buffer)
 	}
 	return (args);
 }
-#include "shell.h"
 
 /**
  * mode_non_interactif - Gère l'exécution en mode non interactif.
@@ -146,10 +148,11 @@ void mode_non_interactif(char *nom)
 	}
 
 
-	if (nread == -1 && !feof(stdin))
+	if (nread == -1)
 	{
 		perror("Erreur de lecture sur stdin");
+		free(ligne);
 		exit(0);
 	}
+	free(ligne);
 }
-
