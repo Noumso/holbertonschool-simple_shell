@@ -1,50 +1,63 @@
 #include "shell.h"
 
 /**
- * find_command_in_path - Resolves a command to its full path.
- * @command: The command to resolve.
+ * find_command_in_path - Recherche le chemin absolu d'une commande.
+ * @command: Le nom de la commande à rechercher (exemple : "ls").
  *
- * Return: A pointer to the resolved path (needs to be freed),
- * or NULL if the command is not found.
+ * Retourne:
+ * - Un pointeur vers une chaîne contenant le chemin complet de la commande
+ *   si elle est trouvée (la mémoire est allouée dynamiquement).
+ * Return: NULL si la commande n'est pas trouvée ou en cas d'erreur.
  */
 char *find_command_in_path(char *command)
 {
-	char *path, *dir, *full_path;
-	struct stat st;
+	char *path = get_env_var("PATH");
+	char *dir, *full_path;
+	size_t len;
 
-	if (command == NULL)
-		return (NULL);
-
-	if (command[0] == '/' || command[0] == '.') /* Absolute or relative path */
-	{
-		if (stat(command, &st) == 0 && (st.st_mode & S_IXUSR))
-			return (strdup(command));
-		return (NULL);
-	}
-
-	path = getenv("PATH");
 	if (!path)
 		return (NULL);
 
-	path = strdup(path); /* Duplicate PATH for strtok */
 	dir = strtok(path, ":");
 	while (dir)
 	{
-		full_path = malloc(strlen(dir) + strlen(command) + 2);
-		if (full_path == NULL)
-			break;
+		len = strlen(dir) + strlen(command) + 2;
+		full_path = malloc(len);
+		if (!full_path)
+			return (NULL);
 
-		sprintf(full_path, "%s/%s", dir, command);
-		if (stat(full_path, &st) == 0 && (st.st_mode & S_IXUSR))
+		snprintf(full_path, len, "%s/%s", dir, command);
+		if (access(full_path, X_OK) == 0)
 		{
-			free(path);
 			return (full_path);
 		}
-
 		free(full_path);
 		dir = strtok(NULL, ":");
 	}
+	return (NULL);
+}
 
-	free(path);
+/**
+ * get_env_var - Récupère la valeur d'une variable d'environnement.
+ * @name: Le nom de la variable d'environnement à chercher (exemple : "PATH").
+ *
+ * Retourne:
+ * - Un pointeur vers la valeur de la variable d'environnement si elle existe.
+ * Return: NULL si la variable n'est pas trouvée.
+ */
+char *get_env_var(const char *name)
+{
+	char *env_var, *value;
+	int i, len = strlen(name);
+
+	for (i = 0; environ[i]; i++)
+	{
+		env_var = environ[i];
+		if (strncmp(env_var, name, len) == 0 && env_var[len] == '=')
+		{
+			value = env_var + len + 1;
+			return (value);
+		}
+	}
 	return (NULL);
 }

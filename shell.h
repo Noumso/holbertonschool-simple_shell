@@ -21,4 +21,5 @@ char *resolve_command_path(char *command);
 void execute_fork(char *resolved_path, char **argv);
 void print_environment(void);
 void print_env(void);
+char *get_env_var(const char *name);
 #endif /* SHELL_H *gg=G*/

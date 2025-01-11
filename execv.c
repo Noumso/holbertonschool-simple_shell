@@ -36,7 +36,7 @@ void execute_command(char *command)
 	resolved_path = resolve_command_path(argv[0]);
 	if (resolved_path == NULL)
 	{
-		fprintf(stderr, "hsh: command not found: %s\n", argv[0]);
+		fprintf(stderr, "%s: command not found\n", command);
 		return;
 	}
 
