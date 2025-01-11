@@ -14,32 +14,37 @@ int main(void)
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t nread;
+	char *token;
+	int i;
+	char *args[10];
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO)) /* Interactive mode */
+		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "($) ", 4);
 
 		nread = getline(&line, &len, stdin);
-		if (nread == -1) /* End of file (Ctrl+D) */
+		if (nread == -1)
 			break;
-
-		/* Remove newline character */
 		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
-
-		/* Skip empty lines */
 		if (*line == '\0')
 			continue;
-
-		/* Check for built-in command "exit" */
-		if (strcmp(line, "exit") == 0)
-			break;
-
-		/* Execute the command */
+		token = strtok(line, " ");
+		i = 0;
+		while (token && i < 10)
+		{
+			args[i++] = token;
+			token = strtok(NULL, " ");
+		}
+		args[i] = NULL;
+		if (args[0] != NULL && strcmp(args[0], "exit") == 0)
+		{
+			handle_exit(args);
+			continue;
+		}
 		execute_command(line);
 	}
-
 	free(line);
 	return (0);
 }
